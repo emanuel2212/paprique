@@ -37,7 +37,7 @@ session_start();
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-tags me-2"></i>Categorias</h1>
             <div>
-                <a href="index.php" class="btn btn-outline-light me-2">
+                <a href="viewCategoria.php" class="btn btn-outline-light me-2">
                     <i class="fas fa-sync-alt me-1"></i> Recarregar
                 </a>
                 <a href="createCategoria.php" class="btn btn-success">
@@ -77,10 +77,10 @@ session_start();
                         echo "<td class='fw-bold'>{$id_categoria}</td>";
                         echo "<td>{$nome_categoria}</td>";
                         echo '<td class="d-flex gap-2">';
-                        echo "<a href='edit.php?id=$id_categoria' class='btn btn-warning btn-sm btn-action'>
+                        echo "<a href='editCategoria.php?id=$id_categoria' class='btn btn-warning btn-sm btn-action'>
                                 <i class='fas fa-edit me-1'></i> Editar
                               </a>";
-                        echo "<a href='delete.php?id=$id_categoria' class='btn btn-danger btn-sm btn-action'>
+                        echo "<a href='deleteCategoria.php?id=$id_categoria' class='btn btn-danger btn-sm btn-action'>
                                 <i class='fas fa-trash-alt me-1'></i> Apagar
                               </a>";
                         echo '</td>';
