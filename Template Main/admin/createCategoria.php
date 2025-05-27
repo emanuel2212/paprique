@@ -36,21 +36,24 @@ if (!empty($formData['AddUser'])) {
         .header-gradient {
             background: linear-gradient(135deg, #28a745, #218838);
         }
+
         .form-container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
         }
+
         .btn-submit {
             transition: all 0.3s;
             letter-spacing: 1px;
         }
+
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -82,16 +85,16 @@ if (!empty($formData['AddUser'])) {
                     </label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                        <input type="text" name="nome_categoria" class="form-control" 
-                               placeholder="Digite o nome da categoria" required
-                               value="<?= isset($formData['nome_categoria']) ? htmlspecialchars($formData['nome_categoria']) : '' ?>">
-                    </div>  
+                        <input type="text" name="nome_categoria" class="form-control"
+                            placeholder="Digite o nome da categoria" required
+                            value="<?= isset($formData['nome_categoria']) ? htmlspecialchars($formData['nome_categoria']) : '' ?>">
+                    </div>
                 </div>
 
                 <div class="col-12 mt-4">
                     <button type="submit" href="viewCategoria.php" name="AddUser" class="btn btn-success btn-lg w-100 btn-submit"
                         class="fas fa-save me-2" value="Cadastrar Categoria">
-                            <i class="fas fa-save me-2"></i> Cadastrar Categoria
+                        <i class="fas fa-save me-2"></i> Cadastrar Categoria
                     </button>
                 </div>
             </form>
