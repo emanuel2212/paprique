@@ -4,7 +4,7 @@
  * Classe para listar, visualizar, criar e editar categorias no banco de dados.
  */
 
- require '../bd/Connection.php';
+ require_once '../bd/Connection.php';
 
 class Categorias extends Connection
 {
@@ -88,22 +88,29 @@ class Categorias extends Connection
         $sql = "INSERT INTO categorias (nome_categoria) VALUES (:nome_categoria)";
 
         // Prepara a consulta SQL para inserção de dados.
-        $addUser = $this->conn->prepare($sql);
+        $AddCategoria = $this->conn->prepare($sql);
 
         // Associa os valores das propriedades ao SQL.
-        $addUser->bindParam(':nome_categoria', $this->formData['nome_categoria']);
+        $AddCategoria->bindParam(':nome_categoria', $this->formData['nome_categoria']);
 
         // Executa a consulta SQL.
-        $addUser->execute();
+        $AddCategoria->execute();
 
         // Verifica se a inserção foi bem-sucedida e retorna o resultado.
-        if ($addUser->rowCount()) {
+        if ($AddCategoria->rowCount()) {
             return true;
         } else {
             return false;
         }
     }
 
+    public function listAll() {
+    $this->conn = $this->connect();
+    $sql = "SELECT id_categoria, nome_categoria FROM categorias ORDER BY nome_categoria";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
     /**
      * Visualiza os detalhes de um categoria específico.
      * 

@@ -7,7 +7,7 @@ require 'Categorias.php';
 // Processamento do formulário movido para o topo para evitar headers já enviados
 $formData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-if (!empty($formData['AddUser'])) {
+if (!empty($formData['AddCategoria'])) {
     $criarCategoria = new Categorias();
     $criarCategoria->setFormData($formData);
     $value = $criarCategoria->create();
@@ -92,7 +92,7 @@ if (!empty($formData['AddUser'])) {
                 </div>
 
                 <div class="col-12 mt-4">
-                    <button type="submit" href="viewCategoria.php" name="AddUser" class="btn btn-success btn-lg w-100 btn-submit"
+                    <button type="submit" href="viewCategoria.php" name="AddCategoria" class="btn btn-success btn-lg w-100 btn-submit"
                         class="fas fa-save me-2" value="Cadastrar Categoria">
                         <i class="fas fa-save me-2"></i> Cadastrar Categoria
                     </button>
