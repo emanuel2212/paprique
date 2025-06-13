@@ -110,7 +110,7 @@ require './Utilizador.php';
         }
         ?>
 
-        <!-- Formulário para edição de um categoria existente -->
+        <!-- Formulário para edição de um utilizador existente -->
         <form method="POST" action="" class="row g-3">
 
             <input type="hidden" name="id_utilizador" value="<?php echo $valueUtilizador['id_utilizador']; ?>">

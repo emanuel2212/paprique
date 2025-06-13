@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Classe para listar, visualizar, criar e editar categorias no banco de dados.
+ * Classe para listar, visualizar, criar e editar utilizadores no banco de dados.
  */
 
  require_once '../bd/Connection.php';
@@ -16,21 +16,21 @@ class Utilizador extends Connection
     public object $conn;
 
     /**
-     * Dados do formulário para criação e edição de um novo categoria.
+     * Dados do formulário para criação e edição de um novo Utilizador.
      * @var array
      */
     public array $formData;
 
     /**
-     * ID do categoria para operações específicas (visualização e edição).
+     * ID do Utilizador para operações específicas (visualização e edição).
      * @var int
      */
     public int $id;
 
     /**
-     * Define os dados do formulário para criação de um novo categoria.
+     * Define os dados do formulário para criação de um novo Utilizador.
      * 
-     * @param array $formData Dados do formulário contendo informações do categoria.
+     * @param array $formData Dados do formulário contendo informações do Utilizador.
      * @return void
      */
     public function setFormData(array $formData): void
@@ -40,21 +40,21 @@ class Utilizador extends Connection
     }
 
     /**
-     * Define o ID do categoria para operações que necessitam de um identificador específico.
+     * Define o ID do Utilizador para operações que necessitam de um identificador específico.
      * 
-     * @param int $id Identificador único do categoria.
+     * @param int $id Identificador único do Utilizador.
      * @return void
      */
     public function setId(int $id_utilizador): void
     {
-        // Atribui o ID do categoria à propriedade id.
+        // Atribui o ID do Utilizador à propriedade id.
         $this->id = $id_utilizador;
     }
 
     /** 
-     * Lista os categorias cadastrados no banco de dados.
+     * Lista os Utilizadors cadastrados no banco de dados.
      * 
-     * @return array Retorna um array contendo os dados dos categorias.
+     * @return array Retorna um array contendo os dados dos Utilizadors.
      */
     public function list(): array
     {
@@ -93,14 +93,14 @@ class Utilizador extends Connection
         // Executa a consulta SQL.
         $resultUser->execute();
 
-        // Retorna os dados do categoria ou false se não encontrado.
+        // Retorna os dados do Utilizador ou false se não encontrado.
         return $resultUser->fetch();
     }
 
     /**
-     * Cria um novo categoria no banco de dados.
+     * Cria um novo Utilizador no banco de dados.
      * 
-     * @return bool Retorna true se o categoria for criado com sucesso, false caso contrário.
+     * @return bool Retorna true se o Utilizador for criado com sucesso, false caso contrário.
      */
     public function create(): bool
 {
@@ -159,29 +159,29 @@ class Utilizador extends Connection
         // Estabelece a conexão com o banco de dados.
         $this->conn = $this->connect();
 
-        // Consulta SQL para atualizar os dados do categoria específico.
+        // Consulta SQL para atualizar os dados do Utilizador específico.
         $sql = "UPDATE utilizador SET id_tipo_utilizador = :id_tipo_utilizador, username = :username, email = :email, morada = :morada, telefone = :telefone, codigo_postal = :codigo_postal, nif = :nif
                 WHERE id_utilizador = :id_utilizador
                 LIMIT 1";
 
         // Prepara a consulta SQL.
-        $editCategoria = $this->conn->prepare($sql);
+        $editUtilizador = $this->conn->prepare($sql);
 
         // Associa os valores das propriedades ao SQL.
-        $editCategoria->bindParam(':id_tipo_utilizador', $this->formData['id_tipo_utilizador']);
-        $editCategoria->bindParam(':username', $this->formData['username']);
-        $editCategoria->bindParam(':email', $this->formData['email']);
-        $editCategoria->bindParam(':morada', $this->formData['morada']);
-        $editCategoria->bindParam(':telefone', $this->formData['telefone']);
-        $editCategoria->bindParam(':codigo_postal', $this->formData['codigo_postal']);
-        $editCategoria->bindParam(':nif', $this->formData['nif']);
-        $editCategoria->bindParam(':id_utilizador', $this->formData['id_utilizador']);
+        $editUtilizador->bindParam(':id_tipo_utilizador', $this->formData['id_tipo_utilizador']);
+        $editUtilizador->bindParam(':username', $this->formData['username']);
+        $editUtilizador->bindParam(':email', $this->formData['email']);
+        $editUtilizador->bindParam(':morada', $this->formData['morada']);
+        $editUtilizador->bindParam(':telefone', $this->formData['telefone']);
+        $editUtilizador->bindParam(':codigo_postal', $this->formData['codigo_postal']);
+        $editUtilizador->bindParam(':nif', $this->formData['nif']);
+        $editUtilizador->bindParam(':id_utilizador', $this->formData['id_utilizador']);
 
         // Executa a consulta SQL.
-        $editCategoria->execute();
+        $editUtilizador->execute();
 
         // Verifica se a atualização foi bem-sucedida e retorna o resultado.
-        if ($editCategoria->rowCount()) {
+        if ($editUtilizador->rowCount()) {
             return true;
         } else {
             return false;
@@ -189,23 +189,23 @@ class Utilizador extends Connection
     }
 
     /**
-     * Exclui um categoria do banco de dados.
+     * Exclui um Utilizador do banco de dados.
      * 
-     * @return bool Retorna true se o categoria for excluído com sucesso, false caso contrário.
+     * @return bool Retorna true se o Utilizador for excluído com sucesso, false caso contrário.
      */
     public function delete(): bool
     {
         // Estabelece a conexão com o banco de dados.
         $this->conn = $this->connect();
 
-        // Consulta SQL para excluir um categoria específico baseado no seu ID.
-        $sql = "DELETE FROM categorias WHERE id_categoria = :id_categoria LIMIT 1";
+        // Consulta SQL para excluir um utilizador específico baseado no seu ID.
+        $sql = "DELETE FROM utilizador WHERE id_utilizador = :id_utilizador LIMIT 1";
 
         // Prepara a consulta SQL.
         $deleteUser = $this->conn->prepare($sql);
 
         // Associa o valor do ID ao parâmetro na consulta SQL.
-        $deleteUser->bindParam(':id_categoria', $this->id);
+        $deleteUser->bindParam(':id_utilizador', $this->id);
 
         // Executa a consulta SQL.
         return $deleteUser->execute();
