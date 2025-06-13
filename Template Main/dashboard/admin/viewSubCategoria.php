@@ -37,6 +37,9 @@ session_start();
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-tags me-2"></i>SubCategorias</h1>
             <div>
+                 <a href="../index.php" class="btn btn-outline-light me-2">
+                    <i class="fas fa-home me-1"></i> Início
+                </a>
                 <a href="viewSubCategoria.php" class="btn btn-outline-light me-2">
                     <i class="fas fa-sync-alt me-1"></i> Recarregar
                 </a>
@@ -55,48 +58,49 @@ session_start();
             <div class="card-body">
                 <?php
                 require './SubCategoria.php';
+
                 $listUsers = new SubCategorias();
                 $resultUsers = $listUsers->list();
 
                 if (!empty($resultUsers)) {
-                    echo '<div class="table-responsive">';
-                    echo '<table class="table table-hover table-striped">';
-                    echo '<thead class="table-dark">';
-                    echo '<tr>';
-                    echo '<th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>';
-                    echo '<th><i class="fas fa-tag me-1"></i> Nome</th>';
-                    echo '<th width="20%"><i class="fas fa-cogs me-1"></i> Ações</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-                    echo '<tbody>';
-
-                    foreach ($resultUsers as $rowUser) {
-                        extract($rowUser);
-
+                        echo '<div class="table-responsive">';
+                        echo '<table class="table table-hover table-striped">';
+                        echo '<thead class="table-dark">';
                         echo '<tr>';
-                        echo "<td class='fw-bold'>{$id_subcategoria}</td>";
-                        echo "<td>{$nome_subcategoria}</td>";
-                        echo '<td class="d-flex gap-2">';
-                        echo "<a href='editSubCategoria.php?id=$id_subcategoria' class='btn btn-warning btn-sm btn-action'>
-                                <i class='fas fa-edit me-1'></i> Editar
-                              </a>";
-                        echo "<a href='deleteSubCategoria.php?id=$id_subcategoria' class='btn btn-danger btn-sm btn-action'>
-                                <i class='fas fa-trash-alt me-1'></i> Apagar
-                              </a>";
-                        echo '</td>';
+                        echo '<th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>';
+                        echo '<th><i class="fas fa-tag me-1"></i> Nome</th>';
+                        echo '<th width="20%"><i class="fas fa-cogs me-1"></i> Ações</th>';
                         echo '</tr>';
-                    }
+                        echo '</thead>';
+                        echo '<tbody>';
 
-                    echo '</tbody>';
-                    echo '</table>';
-                    echo '</div>';
-                } else {
-                    echo '<div class="empty-state">';
-                    echo '<i class="fas fa-inbox fa-3x text-muted mb-3"></i>';
-                    echo '<h4 class="text-muted">Nenhuma categoria encontrada</h4>';
-                    echo '<p class="text-muted">Clique no botão "Cadastrar" para adicionar uma nova categoria</p>';
-                    echo '</div>';
-                }
+                        foreach ($resultUsers as $row) {  
+                            echo '<tr>';
+                            echo "<td>{$row['id_subcategoria']}</td>";
+                            echo "<td class='fw-bold'>{$row['nome_subcategoria']}</td>";
+                            echo '<td class="d-flex gap-2">';
+                            echo "<a href='editSubCategoria.php?id={$row['id_subcategoria']}' class='btn btn-warning btn-sm btn-action'>
+                                    <i class='fas fa-edit me-1'></i> Editar
+                                </a>";
+                            echo "<a href='javascript:void(0)' 
+                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$row['nome_subcategoria']}?\")) { window.location.href=\"deleteSubCategoria.php?id={$row['id_subcategoria']}\"; }' 
+                                    class='btn btn-danger btn-sm btn-action'>
+                                    <i class='fas fa-trash-alt me-1'></i> Apagar
+                                </a>";
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+
+                        echo '</tbody>';
+                        echo '</table>';
+                        echo '</div>';
+                    } else {
+                        echo '<div class="empty-state">';
+                        echo '<i class="fas fa-inbox fa-3x text-muted mb-3"></i>';
+                        echo '<h4 class="text-muted">Nenhuma subcategoria encontrada</h4>';
+                        echo '<p class="text-muted">Clique no botão "Cadastrar" para adicionar uma nova subcategoria</p>';
+                        echo '</div>';
+                    }
                 ?>
             </div>
         </div>

@@ -11,7 +11,7 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Categorias</title>
+    <title>Imagem</title>
     <style>
         .card-header {
             background: linear-gradient(135deg, #343a40, #212529);
@@ -35,15 +35,15 @@ session_start();
 
     <div class="container-fluid p-4 bg-dark text-white shadow mb-4">
         <div class="d-flex justify-content-between align-items-center">
-            <h1 class="m-0"><i class="fas fa-tags me-2"></i>Categorias</h1>
+            <h1 class="m-0"><i class="fas fa-tags me-2"></i>Imagem</h1>
             <div>
                 <a href="../index.php" class="btn btn-outline-light me-2">
                     <i class="fas fa-home me-1"></i> Início
                 </a>
-                <a href="viewCategoria.php" class="btn btn-outline-light me-2">
+                <a href="viewImagem.php" class="btn btn-outline-light me-2">
                     <i class="fas fa-sync-alt me-1"></i> Recarregar
                 </a>
-                <a href="createCategoria.php" class="btn btn-success">
+                <a href="createImagem.php" class="btn btn-success">
                     <i class="fas fa-plus-circle me-1"></i> Cadastrar
                 </a>
             </div>
@@ -53,38 +53,42 @@ session_start();
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header text-white">
-                <i class="fas fa-list me-1"></i> Lista de Categorias
+                <i class="fas fa-list me-1"></i> Lista de Imagens
             </div>
             <div class="card-body">
                 <?php
-                require './Categorias.php';
-                $listUsers = new Categorias();
-                $resultUsers = $listUsers->list();
+                require './Imagens.php';
+                $listImagem = new Imagens();
+                $resultImagens = $listImagem->list();
 
-                if (!empty($resultUsers)) {
+                if (!empty($resultImagens)) {
                     echo '<div class="table-responsive">';
                     echo '<table class="table table-hover table-striped">';
                     echo '<thead class="table-dark">';
                     echo '<tr>';
-                    echo '<th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>';
-                    echo '<th><i class="fas fa-tag me-1"></i> Nome</th>';
+                    echo '<th width="10%"><i class="fas fa-hashtag me-1"></i> ID Imagem</th>';
+                    echo '<th><i class="fas fa-tag me-1"></i> Título</th>';
+                    echo '<th><i class="fas fa-tag me-1"></i> Link Imagem</th>';
+                    echo '<th><i class="fas fa-tag me-1"></i> Descrição</th>';
                     echo '<th width="20%"><i class="fas fa-cogs me-1"></i> Ações</th>';
                     echo '</tr>';
                     echo '</thead>';
                     echo '<tbody>';
 
-                    foreach ($resultUsers as $rowUser) {
-                        extract($rowUser);
+                    foreach ($resultImagens as $rowImagem) {
+                        extract($rowImagem);
 
                         echo '<tr>';
-                        echo "<td class='fw-bold'>{$id_categoria}</td>";
-                        echo "<td>{$nome_categoria}</td>";
+                        echo "<td class='fw-bold'>{$id_imagem}</td>";
+                        echo "<td>{$titulo}</td>";
+                        echo "<td>{$link_imagem}</td>";
+                        echo "<td>{$descricao}</td>";
                         echo '<td class="d-flex gap-2">';
-                        echo "<a href='editCategoria.php?id=$id_categoria' class='btn btn-warning btn-sm btn-action'>
+                        echo "<a href='editImagem.php?id=$id_imagem' class='btn btn-warning btn-sm btn-action'>
                                 <i class='fas fa-edit me-1'></i> Editar
                               </a>";
                          echo "<a href='javascript:void(0)' 
-                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowUser['nome_categoria']}?\")) { window.location.href=\"deleteCategoria.php?id={$rowUser['id_categoria']}\"; }' 
+                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowImagem['titulo']}?\")) { window.location.href=\"deleteImagem.php?id={$rowImagem['id_imagem']}\"; }' 
                                     class='btn btn-danger btn-sm btn-action'>
                                     <i class='fas fa-trash-alt me-1'></i> Apagar
                                 </a>";
@@ -98,8 +102,8 @@ session_start();
                 } else {
                     echo '<div class="empty-state">';
                     echo '<i class="fas fa-inbox fa-3x text-muted mb-3"></i>';
-                    echo '<h4 class="text-muted">Nenhuma categoria encontrada</h4>';
-                    echo '<p class="text-muted">Clique no botão "Cadastrar" para adicionar uma nova categoria</p>';
+                    echo '<h4 class="text-muted">Nenhuma imagem encontrada</h4>';
+                    echo '<p class="text-muted">Clique no botão "Cadastrar" para adicionar uma nova imagem</p>';
                     echo '</div>';
                 }
                 ?>

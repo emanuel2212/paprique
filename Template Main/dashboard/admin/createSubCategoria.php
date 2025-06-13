@@ -117,7 +117,8 @@ if (!empty($formData['addSubCategoria'])) {
     </div>
 
     <div class="col-12 mt-4">
-        <button type="submit" href="viewSubCategoria.php" name="addSubCategoria" class="btn btn-success btn-lg w-100 btn-submit">
+        <button type="submit" href="viewSubCategoria.php" name="addSubCategoria" class="btn btn-success btn-lg w-100 btn-submit"
+            class="fas fa-save me-2" value="Cadastrar SubCategoria">
             <i class="fas fa-save me-2"></i> Cadastrar SubCategoria
         </button>
     </div>

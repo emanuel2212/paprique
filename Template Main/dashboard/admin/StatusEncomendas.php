@@ -6,7 +6,7 @@
 
  require_once '../bd/Connection.php';
 
-class SubCategorias extends Connection
+class StatusEncomendas extends Connection
 {
     
     /**
@@ -45,10 +45,10 @@ class SubCategorias extends Connection
      * @param int $id Identificador único do categoria.
      * @return void
      */
-    public function setId(int $id_subcategoria): void
+    public function setId(int $id_status_encomendas): void
     {
         // Atribui o ID do categoria à propriedade id.
-        $this->id = $id_subcategoria;
+        $this->id = $id_status_encomendas;
     }
 
     /** 
@@ -62,7 +62,7 @@ class SubCategorias extends Connection
         $this->conn = $this->connect();
 
         // Consulta SQL para selecionar os dados dos categorias, limitando o resultado a 40 registros.
-        $sql = "SELECT * FROM `subcategorias` WHERE 1 ORDER BY id_subcategoria LIMIT 40";
+        $sql = "SELECT * FROM `status_encomendas` WHERE 1 ORDER BY id_status_encomendas LIMIT 40";
 
         // Prepara a consulta SQL.
         $stmt = $this->conn->prepare($sql);
@@ -78,20 +78,27 @@ class SubCategorias extends Connection
   public function create(): bool {
     $this->conn = $this->connect();
     
-    // Verifica se recebeu os dados necessários
-    if (!isset($this->formData['id_categoria']) || !isset($this->formData['nome_subcategoria'])) {
-        return false;
-    }
+   // Estabelece a conexão com o banco de dados.
+        $this->conn = $this->connect();
 
-    // Prepara a query
-    $sql = "INSERT INTO subcategorias (id_categoria, nome_subcategoria) 
-            VALUES (:id_categoria, :nome_subcategoria)";
-    
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bindParam(':id_categoria', $this->formData['id_categoria'], PDO::PARAM_INT);
-    $stmt->bindParam(':nome_subcategoria', $this->formData['nome_subcategoria'], PDO::PARAM_STR);
-    
-    return $stmt->execute();
+        // Consulta SQL para inserir um novo categoria.
+        $sql = "INSERT INTO status_encomendas (status) VALUES (:status)";
+
+        // Prepara a consulta SQL para inserção de dados.
+        $AddStatus = $this->conn->prepare($sql);
+
+        // Associa os valores das propriedades ao SQL.
+        $AddStatus->bindParam(':status', $this->formData['status']);
+
+        // Executa a consulta SQL.
+        $AddStatus->execute();
+
+        // Verifica se a inserção foi bem-sucedida e retorna o resultado.
+        if ($AddStatus->rowCount()) {
+            return true;
+        } else {
+            return false;
+        }
 }
 
 
@@ -101,16 +108,16 @@ class SubCategorias extends Connection
         $this->conn = $this->connect();
 
         // Consulta SQL para selecionar os dados de um categoria específico.
-        $sql = "SELECT id_subcategoria, nome_subcategoria
-                FROM subcategorias
-                WHERE id_subcategoria = :id_subcategoria
+        $sql = "SELECT id_status_encomendas, status
+                FROM status_encomendas
+                WHERE id_status_encomendas = :id_status_encomendas
                 LIMIT 1";
 
         // Prepara a consulta SQL.
         $resultUser = $this->conn->prepare($sql);
 
         // Associa o valor do ID ao parâmetro na consulta SQL.
-        $resultUser->bindParam(':id_subcategoria', $this->id);
+        $resultUser->bindParam(':id_status_encomendas', $this->id);
 
         // Executa a consulta SQL.
         $resultUser->execute();
@@ -130,22 +137,23 @@ class SubCategorias extends Connection
         $this->conn = $this->connect();
 
         // Consulta SQL para atualizar os dados do categoria específico.
-        $sql = "UPDATE subcategorias SET nome_subcategoria = :nome_subcategoria
-                WHERE id_subcategoria = :id_subcategoria
+        $sql = "UPDATE status_encomendas SET status = :status
+                WHERE id_status_encomendas = :id_status_encomendas
                 LIMIT 1";
 
         // Prepara a consulta SQL.
-        $editCategoria = $this->conn->prepare($sql);
+        $editStatusEncomenda = $this->conn->prepare($sql);
 
         // Associa os valores das propriedades ao SQL.
-        $editCategoria->bindParam(':nome_subcategoria', $this->formData['nome_subcategoria']);
-        $editCategoria->bindParam(':id_subcategoria', $this->formData['id_subcategoria']);
+        $editStatusEncomenda->bindParam(':status', $this->formData['status']);
+        $editStatusEncomenda->bindParam(':id_status_encomendas', $this->formData['id_status_encomendas']);
+
 
         // Executa a consulta SQL.
-        $editCategoria->execute();
+        $editStatusEncomenda->execute();
 
         // Verifica se a atualização foi bem-sucedida e retorna o resultado.
-        if ($editCategoria->rowCount()) {
+        if ($editStatusEncomenda->rowCount()) {
             return true;
         } else {
             return false;
@@ -162,14 +170,14 @@ class SubCategorias extends Connection
         // Estabelece a conexão com o banco de dados.
         $this->conn = $this->connect();
 
-        // Consulta SQL para excluir um subcategoria específico baseado no seu ID.
-        $sql = "DELETE FROM subcategorias WHERE id_subcategoria = :id_subcategoria LIMIT 1";
+        // Consulta SQL para excluir um status de encomenda específico baseado no seu ID.
+        $sql = "DELETE FROM status_encomendas WHERE id_status_encomendas = :id_status_encomendas LIMIT 1";
 
         // Prepara a consulta SQL.
         $deleteUser = $this->conn->prepare($sql);
 
         // Associa o valor do ID ao parâmetro na consulta SQL.
-        $deleteUser->bindParam(':id_subcategoria', $this->id);
+        $deleteUser->bindParam(':id_status_encomendas', $this->id);
  
         // Executa a consulta SQL.
         return $deleteUser->execute();

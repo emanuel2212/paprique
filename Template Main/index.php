@@ -49,16 +49,7 @@
 </head>
 <body class="js">
 	
-	<!-- Preloader -->
-	<div class="preloader">
-		<div class="preloader-inner">
-			<div class="preloader-icon">
-				<span></span>
-				<span></span>
-			</div>
-		</div>
-	</div>
-	<!-- End Preloader -->
+
 
 	<!-- Header -->
 	<header class="header shop">
@@ -81,7 +72,7 @@
 							<ul class="list-main">
 								
 								<li><i class="ti-user"></i> <a href="#">Minha conta</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
 							</ul>
 						</div>
 						<!-- End Top Right -->
