@@ -168,7 +168,8 @@ $page_file = "";
         <div class="container-fluid">
           <?php
           switch ($page) {
-
+            
+            // Categoria
             case 'viewCategoria':
               $page_file = "./admin/Categorias/viewCategoria.php";
               break;
@@ -182,6 +183,7 @@ $page_file = "";
               $page_file = "./admin/Categorias/deleteCategoria.php";
               break;
 
+            // SubCategoria
             case 'viewSubCategoria':
               $page_file = "./admin/SubCategoria/viewSubCategoria.php";
               break;
@@ -195,6 +197,7 @@ $page_file = "";
               $page_file = "./admin/SubCategoria/deleteSubCategoria.php";
               break;
 
+            // Imagem
             case 'viewImagem':
               $page_file = "./admin/Imagem/viewImagem.php";
               break;
@@ -207,7 +210,8 @@ $page_file = "";
             case 'deleteImagem':
               $page_file = "./admin/Imagem/deleteImagem.php";
               break;
-
+            
+            // Status Encomendas
             case 'viewStatusEncomenda':
               $page_file = "./admin/StatusEncomendas/viewStatusEncomenda.php";
               break;
@@ -221,26 +225,24 @@ $page_file = "";
               $page_file = "./admin/StatusEncomendas/deleteStatusEncomenda.php";
               break;
               
+            // Encomendas
             case 'viewEncomenda':
-              $page_file = "./admin/Encomenda/viewEncomenda.php";
+              $page_file = "./admin/Encomendas/viewEncomenda.php";
               break;
             case 'createEncomenda':
-              $page_file = "./admin/Encomenda/createEncomenda.php";
+              $page_file = "./admin/Encomendas/createEncomenda.php";
               break;
-            case 'editEncomenda':
-              $page_file = "./admin/Encomenda/editEncomenda.php";
+            case 'ListEncomenda':
+              $page_file = "./admin/Encomendas/ListEncomenda.php";
               break;
-            case 'deleteEncomenda':
-              $page_file = "./admin/Encomenda/deleteEncomenda.php";
-              break;
+            
+            // Utilizador
             case 'viewUtilizador':
               $page_file = "./admin/Utilizador/viewUtilizador.php";
               break;
-
             case 'ListUtilizador':
               $page_file = "./admin/Utilizador/listUtilizador.php";
               break;
-
             case 'createUtilizador':
               $page_file = "./admin/Utilizador/createUtilizador.php";
               break;

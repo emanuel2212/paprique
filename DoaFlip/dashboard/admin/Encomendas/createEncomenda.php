@@ -1,7 +1,4 @@
     <?php
-    session_start();
-    ob_start();
-
     require 'Encomendas.php';
 
     // Processamento do formulário movido para o topo para evitar headers já enviados
@@ -14,7 +11,7 @@
 
         if ($value) {
             $_SESSION['msg'] = '<div class="alert alert-success">Encomenda cadastrada com sucesso!</div>';
-            header("Location: viewEncomenda.php");
+            header("Location: ?page=viewEncomenda");
             exit();
         } else {
             $errorMessage = '<div class="alert alert-danger">Erro ao cadastrar encomenda!</div>';
@@ -63,7 +60,7 @@
         <div class="container-fluid p-4 header-gradient text-white shadow mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="m-0"><i class="fas fa-user me-2"></i>Cadastrar Encomenda</h1>
-                <a href="viewEncomenda.php" class="btn btn-outline-light">
+                <a href="?page=viewEncomenda" class="btn btn-outline-light">
                     <i class="fas fa-home me-1"></i> Ínicio
                 </a>
             </div>
@@ -129,7 +126,7 @@
 
 
                     <div class="col-12 mt-4">
-                        <button type="submit" href="viewEncomenda.php" name="AddEncomenda" class="btn btn-success btn-lg w-100 btn-submit"
+                        <button type="submit" href="?page=viewEncomenda");" name="AddEncomenda" class="btn btn-success btn-lg w-100 btn-submit"
                             class="fas fa-save me-2" value="Cadastrar Utilizador">
                             <i class="fas fa-save me-2"></i> Cadastrar Encomenda
                         </button>

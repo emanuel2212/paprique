@@ -34,13 +34,13 @@
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-tags me-2"></i>Encomendas</h1>
             <div>
-                <a href="../index.php" class="btn btn-outline-light me-2">
+                <a href="./" class="btn btn-outline-light me-2">
                     <i class="fas fa-home me-1"></i> Início
                 </a>
-                <a href="viewEncomenda.php" class="btn btn-outline-light me-2">
+                <a href="?page=viewEncomenda" class="btn btn-outline-light me-2">
                     <i class="fas fa-sync-alt me-1"></i> Recarregar
                 </a>
-                <a href="createEncomenda.php" class="btn btn-success">
+                <a href="?page=createEncomenda" class="btn btn-success">
                     <i class="fas fa-plus-circle me-1"></i> Cadastrar
                 </a>
             </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="card-body">
                 <?php
-                require './Encomendas.php';
+                require 'Encomendas.php';
                 $listEncomendas = new Encomendas();
                 $resultEncomendas = $listEncomendas->list();
 
@@ -77,17 +77,9 @@
                         echo "<td class='fw-bold'>{$id_encomenda}</td>";
                         echo "<td>{$data_encomenda}</td>";
                         echo '<td class="d-flex gap-2">';
-                        echo "<a href='ListUtilizador.php?id=$id_encomenda' class='btn btn-secondary btn-sm btn-action'>
-                                <i class='fas fa-eye'></i> VIsualizar
+                        echo "<a href='?page=ListEncomenda&id=$id_encomenda' class='btn btn-secondary btn-sm btn-action'>
+                                <i class='fas fa-eye'></i> Visualizar
                                </a>";
-                        echo "<a href='editUtilizador.php?id=$id_encomenda' class='btn btn-warning btn-sm btn-action'>
-                                <i class='fas fa-edit me-1'></i> Editar
-                              </a>";
-                         echo "<a href='javascript:void(0)' 
-                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowEncomenda['id_encomenda']}?\")) { window.location.href=\"deleteUtilizador.php?id={$rowEncomenda['id_encomenda']}\"; }' 
-                                    class='btn btn-danger btn-sm btn-action'>
-                                    <i class='fas fa-trash-alt me-1'></i> Apagar
-                                </a>";
                         echo '</td>';
                         echo '</tr>';
                     }

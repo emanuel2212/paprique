@@ -115,7 +115,18 @@ class Encomendas extends Connection
     $stmt = $this->conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    }
+    
+     
+   public function getById($id) {
+    $this->conn = $this->connect();
+    $sql = "SELECT * FROM encomendas WHERE id_encomenda = :id";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Visualiza os detalhes de um encomenda específico.
      * 
@@ -137,7 +148,7 @@ class Encomendas extends Connection
         $resultUser = $this->conn->prepare($sql);
 
         // Associa o valor do ID ao parâmetro na consulta SQL.
-        $resultUser->bindParam(':id_categoria', $this->id);
+        $resultUser->bindParam(':id_encomenda', $this->id);
 
         // Executa a consulta SQL.
         $resultUser->execute();
