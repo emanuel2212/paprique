@@ -33,13 +33,13 @@
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-tags me-2"></i>Status de Encomenda</h1>
             <div>
-                <a href="../index.php" class="btn btn-outline-light me-2">
+                <a href="./" class="btn btn-outline-light me-2">
                     <i class="fas fa-home me-1"></i> Início
                 </a>
-                <a href="viewStatusEncomenda.php" class="btn btn-outline-light me-2">
+                <a href="?page=viewStatusEncomenda" class="btn btn-outline-light me-2">
                     <i class="fas fa-sync-alt me-1"></i> Recarregar
                 </a>
-                <a href="createStatusEncomenda.php" class="btn btn-success">
+                <a href="?page=createStatusEncomenda" class="btn btn-success">
                     <i class="fas fa-plus-circle me-1"></i> Cadastrar
                 </a>
             </div>
@@ -53,7 +53,7 @@
             </div>
             <div class="card-body">
                 <?php
-                require './StatusEncomendas.php';
+                require 'StatusEncomendas.php';
                 $listUsers = new StatusEncomendas();
                 $resultUsers = $listUsers->list();
 
@@ -76,11 +76,11 @@
                         echo "<td class='fw-bold'>{$id_status_encomendas}</td>";
                         echo "<td>{$status}</td>";
                         echo '<td class="d-flex gap-2">';
-                        echo "<a href='editStatusEncomenda.php?id=$id_status_encomendas' class='btn btn-warning btn-sm btn-action'>
+                        echo "<a href='?page=editStatusEncomenda&id=$id_status_encomendas' class='btn btn-warning btn-sm btn-action'>
                                 <i class='fas fa-edit me-1'></i> Editar
                               </a>";
                          echo "<a href='javascript:void(0)' 
-                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowUser['status']}?\")) { window.location.href=\"deleteStatusEncomenda.php?id={$rowUser['id_status_encomendas']}\"; }' 
+                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowUser['status']}?\")) { window.location.href=\"?page=deleteStatusEncomenda&id={$rowUser['id_status_encomendas']}\"; }' 
                                     class='btn btn-danger btn-sm btn-action'>
                                     <i class='fas fa-trash-alt me-1'></i> Apagar
                                 </a>";

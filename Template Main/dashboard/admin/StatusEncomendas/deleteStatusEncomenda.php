@@ -1,10 +1,9 @@
 <?php
-session_start();
-require_once './StatusEncomendas.php';
+require_once 'StatusEncomendas.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['msg'] = 'ID inválido!';
-    header('Location: viewStatusEncomenda.php');
+    header('Location: ?page=viewStatusEncomenda');
     exit;
 }
 
@@ -17,5 +16,5 @@ if ($statusEncomenda->delete()) {
     $_SESSION['msg'] = 'Erro ao excluir status de encomenda!';
 }
 
-header('Location: viewStatusEncomenda.php');
+header('Location: ?page=viewStatusEncomenda');
 exit;

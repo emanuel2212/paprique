@@ -1,10 +1,8 @@
 <?php
-session_start();
-ob_start();
 
 $id_status_encomendas = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-require './StatusEncomendas.php';
+require 'StatusEncomendas.php';
 
 ?>
 <!DOCTYPE html>
@@ -45,7 +43,7 @@ require './StatusEncomendas.php';
     <div class="container-fluid p-4 header-gradient text-white shadow mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-edit me-2"></i>Editar Status de Encomenda</h1>
-            <a href="viewStatusEncomenda.php" class="btn btn-outline-light">
+            <a href="?page=viewStatusEncomenda" class="btn btn-outline-light">
                 <i class="fas fa-arrow-left me-1"></i> Voltar
             </a>
         </div>
@@ -75,7 +73,7 @@ require './StatusEncomendas.php';
                 // Define uma mensagem de sucesso na sessão e redireciona para a página de visualização.
                 $_SESSION['msg'] = "<p style='color: #086;'>status de encomenda editado com sucesso!</p>";
                 // Redireciona para a página de visualização do status de encomenda.
-                header("Location: viewStatusEncomenda.php?id_status_encomendas=$id_status_encomendas");
+                header("Location: ?page=viewStatusEncomenda");
             } else {
                 // Exibe uma mensagem de erro se a edição falhar.
                 echo "<p style='color: #f00;'>status de encomenda não editado!</p>";
@@ -103,7 +101,7 @@ require './StatusEncomendas.php';
                 $_SESSION['msg'] = "<p style='color: #086;'>status de encomenda encontrado!</p>";
 
                 // Redireciona para a página de listagem de status de encomenda.
-                header("Location: viewStatusEncomenda.php");
+                header("Location: ?page=viewStatusEncomenda");
 
                 return;
             }

@@ -1,6 +1,4 @@
 <?php
-session_start();
-ob_start();
 
 require 'StatusEncomendas.php';
 
@@ -14,7 +12,7 @@ if (!empty($formData['AddStatus'])) {
 
     if ($value) {
         $_SESSION['msg'] = '<div class="alert alert-success">Status de encomenda cadastrado com sucesso!</div>';
-        header("Location: viewStatusEncomenda.php");
+        header("Location: ?page=viewStatusEncomenda");
         exit(); // Adicionado exit() após header redirect
     } else {
         $errorMessage = '<div class="alert alert-danger">Erro ao cadastrar status de encomenda!</div>';
@@ -55,7 +53,7 @@ if (!empty($formData['AddStatus'])) {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-    </style>
+    </style>    
 </head>
 
 <body class="bg-light">
@@ -63,7 +61,7 @@ if (!empty($formData['AddStatus'])) {
     <div class="container-fluid p-4 header-gradient text-white shadow mb-4">
         <div class="d-flex justify-content-between align-items-center">
             <h1 class="m-0"><i class="fas fa-tags me-2"></i>Cadastrar Status de Encomenda</h1>
-            <a href="viewStatusEncomenda.php" class="btn btn-outline-light">
+            <a href="?page=viewStatusEncomenda" class="btn btn-outline-light">
                 <i class="fas fa-home me-1"></i> Ínicio
             </a>
         </div>
@@ -92,7 +90,7 @@ if (!empty($formData['AddStatus'])) {
                 </div>
 
                 <div class="col-12 mt-4">
-                    <button type="submit" href="viewStatusEncomenda.php" name="AddStatus" class="btn btn-success btn-lg w-100 btn-submit"
+                    <button type="submit" href="?page=viewStatusEncomenda" name="AddStatus" class="btn btn-success btn-lg w-100 btn-submit"
                         class="fas fa-save me-2" value="Cadastrar Status de Encomenda">
                         <i class="fas fa-save me-2"></i> Cadastrar Status de Encomenda
                     </button>

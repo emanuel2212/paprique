@@ -207,18 +207,20 @@ $page_file = "";
             case 'deleteImagem':
               $page_file = "./admin/Imagem/deleteImagem.php";
               break;
+
             case 'viewStatusEncomenda':
-              $page_file = "./admin/StatusEncomenda/viewStatusEncomenda.php";
+              $page_file = "./admin/StatusEncomendas/viewStatusEncomenda.php";
               break;
             case 'createStatusEncomenda':
-              $page_file = "./admin/StatusEncomenda/createStatusEncomenda.php";
+              $page_file = "./admin/StatusEncomendas/createStatusEncomenda.php";
               break;
             case 'editStatusEncomenda':
-              $page_file = "./admin/StatusEncomenda/editStatusEncomenda.php";
+              $page_file = "./admin/StatusEncomendas/editStatusEncomenda.php";
               break;
             case 'deleteStatusEncomenda':
-              $page_file = "./admin/StatusEncomenda/deleteStatusEncomenda.php";
+              $page_file = "./admin/StatusEncomendas/deleteStatusEncomenda.php";
               break;
+              
             case 'viewEncomenda':
               $page_file = "./admin/Encomenda/viewEncomenda.php";
               break;
