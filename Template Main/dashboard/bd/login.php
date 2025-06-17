@@ -2,6 +2,16 @@
 session_start();
 require_once './Connection.php';
 
+// Se já estiver logado, redirecione para a página apropriada
+if (isset($_SESSION['user'])) {
+    if ($_SESSION['user_tipo'] == 1) {
+        header('Location: ../index.php');
+    } else {
+        header('Location: ../../index.php?page=login.php');
+    }
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica se os campos foram enviados
     if (empty($_POST['username']) || empty($_POST['password'])) {
@@ -39,11 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user_name'] = $user['username'];
                 $_SESSION['user_tipo'] = $user['id_tipo_utilizador'];
 
-
                 if ($user['id_tipo_utilizador'] == 1) { // Assumindo que 1 é admin
-                    header('Location: ../index.php'); // Página do administrador
+                    header('Location: ../index.php');
                 } else {
-                    header('Location: ../index.php'); // Página inicial para usuários normais
+                    header('Location: ../index.php');
                 }
                 exit();
             }
@@ -51,16 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Se chegou aqui, a autenticação falhou
         $_SESSION['erro_login'] = "Utilizador ou senha inválidos!";
-        header('Location: ../../login.php');
-        exit();
+        header('Location: ../../index.php?page=login');
 
+        
+        exit();
     } catch (PDOException $e) {
         $_SESSION['erro_login'] = "Erro ao tentar fazer login. Por favor, tente novamente.";
         error_log("Login error: " . $e->getMessage());
-        header('Location: ../../login.php');
+        header('Location: ../../index.php?page=login');
         exit();
     }
 } else {
-    header('Location: ../../login.php');
+    // Se acessado diretamente sem POST, redirecione para login
+    header('Location: ../../index.php?page=login.php');
+
     exit();
 }
