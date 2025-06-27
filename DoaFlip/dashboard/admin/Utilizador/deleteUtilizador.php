@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once './Utilizador.php';
+require_once 'Utilizador.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['msg'] = 'ID inválido!';

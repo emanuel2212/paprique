@@ -1,6 +1,4 @@
 <?php
-session_start();
-ob_start();
 
 require 'Utilizador.php';
 
