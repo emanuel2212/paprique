@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once './Connection.php';
+require_once 'Connection.php';
 
 // Se já estiver logado, redirecione para a página apropriada
 if (isset($_SESSION['user'])) {
