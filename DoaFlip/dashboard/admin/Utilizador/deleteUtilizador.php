@@ -3,7 +3,7 @@ require_once 'Utilizador.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['msg'] = 'ID inválido!';
-    header('Location: viewUtilizador.php');
+    header('Location: ?page=viewUtilizador');
     exit;
 }
 
@@ -16,5 +16,5 @@ if ($utilizador->delete()) {
     $_SESSION['msg'] = 'Erro ao excluir categoria!';
 }
 
-header('Location: viewUtilizador.php');
+header('Location: ?page=viewUtilizador');
 exit;

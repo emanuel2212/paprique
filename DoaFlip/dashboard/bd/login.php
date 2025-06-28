@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Se acessado diretamente sem POST, redirecione para login
-    header('Location: ../../index.php?page=login.php');
+    header('Location: ../../index.php?page=login');
 
     exit();
 }
