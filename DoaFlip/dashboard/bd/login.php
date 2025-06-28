@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user['id_tipo_utilizador'] == 1) { // Assumindo que 1 é admin
                     header('Location: ../index.php');
                 } else {
-                    header('Location: ../index.php');
+                    header('Location: ../../index.php');
                 }
                 exit();
             }
