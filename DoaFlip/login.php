@@ -54,14 +54,9 @@
 										<button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
 										<p class="mt-5 mb-3 text-muted">&copy; 2025</p>
 									</div>
-									<div class="checkbox">
-										<label class="checkbox-inline" for="remember">
-											<input name="remember" id="remember" type="checkbox">Lembre-se de mim
-										</label>
-									</div>
-									<a href="#" class="lost-pass">Perdeu a sua senha?</a>
+									
 
-									<a href="register.php" class="btn">Registar</a>
+									<a href="?page=register" class="btn">Registar</a>
 								</div>
 							</div>
 						</form>

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "Connection.php";
 
 $page = '';
 if (isset($_GET["page"]))
@@ -8,7 +9,6 @@ if (isset($_GET["page"]))
 $page_file = "";
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-pt">
@@ -216,6 +216,10 @@ $page_file = "";
 					<?php
 					switch ($page) {
 
+						case 'index':
+							$page_file = "index.php";
+							break;
+
 						case 'register':
 							$page_file = "register.php";
 							break;
@@ -223,6 +227,12 @@ $page_file = "";
 						case 'login':
 							$page_file = "login.php";
 							break;
+
+						case 'marcas':
+							$page_file = "marcas.php";
+							break;
+
+						
 					}
 					if (!empty($page_file) && file_exists($page_file)) {
 						include($page_file);
