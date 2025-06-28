@@ -419,6 +419,11 @@ $page_file = "";
             case 'deleteProduto':
               $page_file = "./admin/Produtos/deleteProduto.php";
               break;
+
+
+            case 'logout':
+              $page_file = "./bd/logout.php";
+              break;
               
             default:
               $page_file = "./admin/404.php";

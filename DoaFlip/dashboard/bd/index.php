@@ -1,15 +1,6 @@
 <?php
 session_start();
-ob_start();
 require "Connection.php";
-
-
-// Verifica se há mensagem de logout
-if (isset($_SESSION['logout_message'])) {
-	$logout_message = $_SESSION['logout_message'];
-	unset($_SESSION['logout_message']); // Remove a mensagem após exibir
-}
-
 
 // Verifica se o usuário está logado
 $user_logged_in = isset($_SESSION['user']);
@@ -81,21 +72,15 @@ $page_file = "";
 		<!-- Topbar -->
 		<div class="topbar">
 			<div class="container">
-				<?php if (!empty($logout_message)): ?>
-					<div class="alert alert-success alert-dismissible fade show" role="alert">
-						<?php echo htmlspecialchars($logout_message); ?>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
-				<?php endif; ?>
 				<div class="row">
 					<div class="col-lg-4 col-md-12 col-12">
 						<!-- Top Left -->
 						<div class="top-left">
 							<ul class="list-main">
 								<?php if ($user_logged_in): ?>
-									<a href="#">Olá, <?php echo htmlspecialchars($username); ?>! Seja Bem vindo(a)!!</a>
+									<a href="#">Olá, <?php echo htmlspecialchars($username); ?>! Seja Bem vindo!!</a>
 								<?php else: ?>
-									<a href="#">Olá, Seja Bem vindo(a)!!</a>
+									<a href="#">Olá, Seja Bem vindo!!</a>
 								<?php endif; ?>
 							</ul>
 						</div>
@@ -106,7 +91,7 @@ $page_file = "";
 						<div class="right-content">
 							<ul class="list-main">
 								<?php if ($user_logged_in): ?>
-									<li><i class="ti-power-off"></i><a href="logout.php">Logout</a></li>
+									<li><i class="ti-power-off"></i><a href="?page">Logout</a></li>
 								<?php else: ?>
 									<li><i class="ti-user"></i> <a href="?page=register">Registar</a></li>
 									<li><i class="ti-power-off"></i><a href="?page=login">Login</a></li>
@@ -244,11 +229,9 @@ $page_file = "";
 						case 'index':
 							$page_file = "index.php";
 							break;
-
+						
 						case 'logout':
-							// Em vez de incluir, redireciona diretamente
-							header('Location: logout.php');
-							exit();
+							$page_file = "logout.php";
 							break;
 
 						case 'register':

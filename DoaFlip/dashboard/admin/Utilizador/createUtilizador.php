@@ -174,7 +174,7 @@ if (!empty($formData['AddUtilizador'])) {
                 </div>
 
                 <div class="col-12 mt-4">
-                    <button type="submit" href="viewUtilizador.php" name="AddUtilizador"  class="btn btn-success btn-lg w-100 btn-submit"
+                    <button type="submit" href="?page=viewUtilizador" name="AddUtilizador"  class="btn btn-success btn-lg w-100 btn-submit"
                     class="fas fa-save me-2" value="Cadastrar Utilizador">
                         <i class="fas fa-save me-2"></i> Cadastrar Utilizador
                     </button>

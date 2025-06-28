@@ -142,10 +142,10 @@ if (!empty($formData['EditProduto'])) {
                         <i class="fas fa-image me-1"></i> Imagem do Produto
                     </label>
                     <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*">
-                    <?php if (!empty($dadosProduto['id_imagem'])): ?>
+                    <?php if (!empty($dadosProduto['link_imagem'])): ?>
                         <div class="mt-2">
                             <small>Imagem atual:</small><br>
-                            <img src="<?= htmlspecialchars($dadosProduto['id_imagem']) ?>" class="img-thumbnail mt-2" style="max-height: 100px;">
+                            <img src="<?= htmlspecialchars($dadosProduto['link_imagem']) ?>" class="img-thumbnail mt-2" style="max-height: 100px;">
                         </div>
                     <?php endif; ?>
                     <img id="imagePreview" class="preview-image img-thumbnail" src="#" alt="Pré-visualização da imagem">

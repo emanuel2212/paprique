@@ -108,8 +108,8 @@ unset($_SESSION['msg']);
                         <i class="fas fa-image me-1"></i> Imagem do Produto
                     </div>
                     <div class="card-body text-center">
-                        <?php if (!empty($detalhes['imagem_url'])): ?>
-                            <img src="<?= htmlspecialchars($detalhes['imagem_url']) ?>" alt="Imagem do Produto" class="product-image img-fluid">
+                        <?php if (!empty($detalhes['link_imagem'])): ?>
+                            <img src="./images/"<?= htmlspecialchars($detalhes['link_imagem']) ?> alt="Imagem do Produto" class="product-image img-fluid">
                         <?php else: ?>
                             <div class="text-muted py-4">
                                 <i class="fas fa-image fa-4x mb-3"></i>
