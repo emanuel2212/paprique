@@ -162,7 +162,7 @@ $page_file = "";
         <div class="brand-logo d-flex align-items-center justify-content-between">
           <a href="./" class="text-nowrap logo-img d-flex align-items-center">
             <img src="assets/images/logos/logo.png" width="100px" height="100px" alt="Logo" class="me-2" />
-            <span class="text-white fw-bold">Admin Panel</span>
+            <span class="text fw-bold">Admin Panel</span>
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-6"></i>

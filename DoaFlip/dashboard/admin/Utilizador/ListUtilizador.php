@@ -108,6 +108,10 @@ unset($_SESSION['msg']);
                     <div class="col-md-9 detail-value"><?= displayValue($detalhes['username']) ?></div>
                 </div>
                 <div class="row mb-3">
+                    <div class="col-md-3 detail-label">Nome Completo:</div>
+                    <div class="col-md-9 detail-value"><?= displayValue($detalhes['nome_completo']) ?></div>
+                </div>
+                <div class="row mb-3">
                     <div class="col-md-3 detail-label">Email:</div>
                     <div class="col-md-9 detail-value"><?= displayValue($detalhes['email']) ?></div>
                 </div>
@@ -118,8 +122,8 @@ unset($_SESSION['msg']);
                         if (isset($detalhes['id_tipo_utilizador'])) {
                             switch($detalhes['id_tipo_utilizador']) {
                                 case 1: echo 'Administrador'; break;
-                                case 2: echo 'Cliente'; break;
-                                case 3: echo 'Funcionário'; break;
+                                case 2: echo 'Funcionário'; break;
+                                case 3: echo 'Cliente'; break;
                                 default: echo 'Indefinido';
                             }
                         } else {

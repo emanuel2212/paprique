@@ -176,15 +176,17 @@ if (!empty($formData['EditProduto'])) {
             '18': [ // Peças
                 {value: '9', text: 'Trucks'},
                 {value: '10', text: 'Rodas'},
-                {value: '13', text: 'Rolamentos'},
-                {value: '14', text: 'Amortecedores'},
-                {value: '15', text: 'Porcas e Parafusos'},
-                {value: '16', text: 'Cera de Skate'},
-                {value: '17', text: 'Chave de Skate'}
+                {value: '15', text: 'Rolamentos'},
+                {value: '16', text: 'Amortecedores'},
+                {value: '17', text: 'Porcas e Parafusos'},
+                {value: '18', text: 'Cera de Skate'},
+                {value: '19', text: 'Chave de Skate'},
+                {value: '24', text: 'Tábua'},
+                {value: '25', text: 'Lixa'}
             ],
             '19': [ // Proteções
-                {value: '18', text: 'Capacete'},
-                {value: '19', text: 'Joelheira'},
+                {value: '13', text: 'Capacete'},
+                {value: '14', text: 'Joelheira'},
                 {value: '22', text: 'Protetor de Punho'},
                 {value: '23', text: 'Cotoveleira'}
             ]

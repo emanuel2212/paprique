@@ -94,7 +94,8 @@ unset($_SESSION['msg']);
     </div>
 
     <div class="container mt-4">
-        <?php if ($mensagem): ?>
+        <?php 
+        if ($mensagem): ?>
             <div class="alert alert-dismissible fade show <?= strpos($mensagem, 'sucesso') !== false ? 'alert-success' : 'alert-danger' ?>">
                 <?= $mensagem ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -108,8 +109,10 @@ unset($_SESSION['msg']);
                         <i class="fas fa-image me-1"></i> Imagem do Produto
                     </div>
                     <div class="card-body text-center">
-                        <?php if (!empty($detalhes['link_imagem'])): ?>
-                            <img src="./images/"<?= htmlspecialchars($detalhes['link_imagem']) ?> alt="Imagem do Produto" class="product-image img-fluid">
+                        <?php 
+
+                        if (!empty($detalhes['link_imagem'])): ?>
+                            <img src="../images/<?= htmlspecialchars($detalhes['link_imagem']) ?>" alt="Imagem do Produto" class="product-image img-fluid">
                         <?php else: ?>
                             <div class="text-muted py-4">
                                 <i class="fas fa-image fa-4x mb-3"></i>

@@ -3,8 +3,9 @@
 /**
  * Classe para listar, visualizar, criar e editar categorias no banco de dados.
  */
-
+ob_start(); // Inicia o buffer de saída para capturar mensagens de erro e redirecionamentos
  require_once './bd/Connection.php';
+ 
 
 class Produtos extends Connection
 {
@@ -75,38 +76,72 @@ class Produtos extends Connection
     }
 
 
-  public function create(): bool {
+ public function create(): bool {
     $this->conn = $this->connect();
     
-   // Estabelece a conexão com o banco de dados.
-        $this->conn = $this->connect();
+    try {
+        // Debug: Verificar conexão
+        error_log("Tentando conectar ao banco de dados");
+        
+        // Iniciar transação
+        $this->conn->beginTransaction();
+        error_log("Transação iniciada");
 
-        // Consulta SQL para inserir um novo categoria.
-        $sql = "INSERT INTO produtos (id_categoria, id_subcategoria, id_imagem, marca, nome_produto, descricao, preco) 
-        VALUES (:id_categoria, :id_subcategoria, :id_imagem, :marca, :nome_produto, :descricao, :preco)";
-
-        // Prepara a consulta SQL para inserção de dados.
-        $AddProduto = $this->conn->prepare($sql);
-
-        // Associa os valores das propriedades ao SQL.
-        $AddProduto->bindParam(':id_categoria', $this->formData['id_categoria']);
-        $AddProduto->bindParam(':id_subcategoria', $this->formData['id_subcategoria']);
-        $AddProduto->bindParam(':id_imagem', $this->formData['id_imagem']);
-        $AddProduto->bindParam(':marca', $this->formData['marca']);
-        $AddProduto->bindParam(':nome_produto', $this->formData['nome_produto']);
-        $AddProduto->bindParam(':descricao', $this->formData['descricao']);
-        $AddProduto->bindParam(':preco', $this->formData['preco']);
-
-
-        // Executa a consulta SQL.
-        $AddProduto->execute();
-
-        // Verifica se a inserção foi bem-sucedida e retorna o resultado.
-        if ($AddProduto->rowCount()) {
-            return true;
-        } else {
-            return false;
+        // 1. Inserir imagem se existir
+        $id_imagem = null;
+        if (!empty($this->formData['link_imagem'])) {
+            $sql = "INSERT INTO imagens (link_imagem) VALUES (?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$this->formData['link_imagem']]);
+            $id_imagem = $this->conn->lastInsertId();
+            error_log("Imagem inserida com ID: " . $id_imagem);
         }
+
+        // 2. Inserir produto
+        $sql = "INSERT INTO produtos (
+            id_categoria, id_subcategoria, id_imagem, 
+            marca, nome_produto, descricao, preco
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $this->conn->prepare($sql);
+        $success = $stmt->execute([
+            $this->formData['id_categoria'],
+            $this->formData['id_subcategoria'],
+            $id_imagem,
+            $this->formData['marca'],
+            $this->formData['nome_produto'],
+            $this->formData['descricao'],
+            $this->formData['preco']
+        ]);
+        
+        if (!$success) {
+            throw new Exception("Erro ao inserir produto: " . implode(", ", $stmt->errorInfo()));
+        }
+        
+        $id_produto = $this->conn->lastInsertId();
+        error_log("Produto inserido com ID: " . $id_produto);
+
+        // 3. Atualizar imagem com ID do produto
+        if ($id_imagem) {
+            $sql = "UPDATE imagens SET id_produto = ? WHERE id_imagem = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$id_produto, $id_imagem]);
+            error_log("Imagem atualizada com ID do produto");
+        }
+
+        // Commit
+        $this->conn->commit();
+        error_log("Transação concluída com sucesso");
+        return true;
+
+    } catch (Exception $e) {
+        error_log("ERRO: " . $e->getMessage());
+        if ($this->conn->inTransaction()) {
+            $this->conn->rollBack();
+            error_log("Transação revertida");
+        }
+        return false;
+    }
 }
 
 
@@ -197,14 +232,16 @@ class Produtos extends Connection
 
         // Associa o valor do ID ao parâmetro na consulta SQL.
         $deleteUser->bindParam(':id_produto', $this->id);
- 
+        
         // Executa a consulta SQL.
         return $deleteUser->execute();
     }
     
     public function getById($id) {
     $this->conn = $this->connect();
-    $sql = "SELECT * FROM produtos WHERE id_produto = :id";
+    $sql = "SELECT P.*, I.link_imagem FROM produtos P INNER JOIN imagens I ON I.id_produto = P.id_produto 
+            WHERE P.id_produto = :id ";
+
     $stmt = $this->conn->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();

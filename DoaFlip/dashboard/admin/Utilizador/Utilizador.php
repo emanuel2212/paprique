@@ -80,7 +80,7 @@ class Utilizador extends Connection
         $this->conn = $this->connect();
 
         // Consulta SQL para selecionar os dados de um utilizador específico.
-        $sql = "SELECT id_utilizador, id_tipo_utilizador, username, email, morada, telefone, codigo_postal, nif, data_criado
+        $sql = "SELECT id_utilizador, id_tipo_utilizador, username, nome_completo, email, morada, telefone, codigo_postal, nif, data_criado
                 FROM utilizador
                 WHERE id_utilizador = :id_utilizador";
 
@@ -111,7 +111,7 @@ class Utilizador extends Connection
     $hashedPassword = sha1($this->formData['password']);
 
     // Consulta SQL para inserir um novo utilizador.
-    $sql = "INSERT INTO utilizador (id_tipo_utilizador, username, email, password, morada, telefone, codigo_postal, data_criado, nif) VALUES (:id_tipo_utilizador, :username, :email, :password, :morada, :telefone, :codigo_postal, NOW(), :nif)";
+    $sql = "INSERT INTO utilizador (id_tipo_utilizador, username, nome_completo, email, password, morada, telefone, codigo_postal, data_criado, nif) VALUES (:id_tipo_utilizador, :username, :nome_completo, :email, :password, :morada, :telefone, :codigo_postal, NOW(), :nif)";
 
     // Prepara a consulta SQL para inserção de dados.
     $AddUtilizador = $this->conn->prepare($sql);
@@ -119,6 +119,7 @@ class Utilizador extends Connection
     // Associa os valores das propriedades ao SQL.
     $AddUtilizador->bindParam(':id_tipo_utilizador', $this->formData['id_tipo_utilizador']);
     $AddUtilizador->bindParam(':username', $this->formData['username']);
+    $AddUtilizador->bindParam(':nome_completo', $this->formData['nome_completo']);
     $AddUtilizador->bindParam(':email', $this->formData['email']);
     $AddUtilizador->bindParam(':password', $hashedPassword); // Usando a senha com hash
     $AddUtilizador->bindParam(':morada', $this->formData['morada']);
@@ -160,7 +161,7 @@ class Utilizador extends Connection
         $this->conn = $this->connect();
 
         // Consulta SQL para atualizar os dados do Utilizador específico.
-        $sql = "UPDATE utilizador SET id_tipo_utilizador = :id_tipo_utilizador, username = :username, email = :email, morada = :morada, telefone = :telefone, codigo_postal = :codigo_postal, nif = :nif
+        $sql = "UPDATE utilizador SET id_tipo_utilizador = :id_tipo_utilizador, username = :username, nome_completo = :nome_completo, email = :email, morada = :morada, telefone = :telefone, codigo_postal = :codigo_postal, nif = :nif
                 WHERE id_utilizador = :id_utilizador
                 LIMIT 1";
 
@@ -170,6 +171,7 @@ class Utilizador extends Connection
         // Associa os valores das propriedades ao SQL.
         $editUtilizador->bindParam(':id_tipo_utilizador', $this->formData['id_tipo_utilizador']);
         $editUtilizador->bindParam(':username', $this->formData['username']);
+        $editUtilizador->bindParam(':nome_completo', $this->formData['nome_completo']);
         $editUtilizador->bindParam(':email', $this->formData['email']);
         $editUtilizador->bindParam(':morada', $this->formData['morada']);
         $editUtilizador->bindParam(':telefone', $this->formData['telefone']);

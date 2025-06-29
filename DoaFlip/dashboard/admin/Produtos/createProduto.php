@@ -1,23 +1,66 @@
 <?php
-
+require './bd/Connection.php'; 
 require 'Produtos.php';
 
-// Processamento do formulário movido para o topo para evitar headers já enviados
-$formData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Processar dados do formulário
+    $dados = [
+        'id_categoria' => $_POST['id_categoria'],
+        'id_subcategoria' => $_POST['id_subcategoria'],
+        'marca' => $_POST['marca'],
+        'nome_produto' => $_POST['nome_produto'],
+        'descricao' => $_POST['descricao'],
+        'preco' => $_POST['preco']
+    ];
 
-if (!empty($formData['AddProduto'])) {
-    $criarProduto = new Produtos();
-    $criarProduto->setFormData($formData);
-    $value = $criarProduto->create();
+    // Processar imagem
+    if (!empty($_FILES['imagem']['name'])) {
+        $pasta = '../images/';
+        $nome_arquivo = uniqid() . '_' . $_FILES['imagem']['name'];
+        move_uploaded_file($_FILES['imagem']['tmp_name'], $pasta . $nome_arquivo);
+        $dados['link_imagem'] = $nome_arquivo;
+    }
 
-    if ($value) {
+    // Criar conexão
+    $conn = new Connection(); // Agora vai funcionar
+    $pdo = $conn->connect();
+
+    try {
+        // Inserir produto
+        $sql = "INSERT INTO produtos 
+               (id_categoria, id_subcategoria, marca, nome_produto, descricao, preco) 
+               VALUES (?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            $dados['id_categoria'],
+            $dados['id_subcategoria'],
+            $dados['marca'],
+            $dados['nome_produto'],
+            $dados['descricao'],
+            $dados['preco']
+        ]);
+
+        $id_produto = $pdo->lastInsertId();
+
+        // Inserir imagem se existir
+        if (!empty($dados['link_imagem'])) {
+            $sql_img = "INSERT INTO imagens (link_imagem, id_produto) VALUES (?, ?)";
+            $stmt_img = $pdo->prepare($sql_img);
+            $stmt_img->execute([$dados['link_imagem'], $id_produto]);
+        }
+
         $_SESSION['msg'] = '<div class="alert alert-success">Produto cadastrado com sucesso!</div>';
         header("Location: ?page=viewProduto");
         exit();
-    } else {
-        $errorMessage = '<div class="alert alert-danger">Erro ao cadastrar produto!</div>';
+
+    } catch (PDOException $e) {
+        $_SESSION['msg'] = '<div class="alert alert-danger">Erro: ' . $e->getMessage() . '</div>';
+        header("Location: ?page=createProduto");
+        exit();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -172,15 +215,17 @@ if (!empty($formData['AddProduto'])) {
             '18': [ // Peças
                 {value: '9', text: 'Trucks'},
                 {value: '10', text: 'Rodas'},
-                {value: '13', text: 'Rolamentos'},
-                {value: '14', text: 'Amortecedores'},
-                {value: '15', text: 'Porcas e Parafusos'},
-                {value: '16', text: 'Cera de Skate'},
-                {value: '17', text: 'Chave de Skate'}
+                {value: '15', text: 'Rolamentos'},
+                {value: '16', text: 'Amortecedores'},
+                {value: '17', text: 'Porcas e Parafusos'},
+                {value: '18', text: 'Cera de Skate'},
+                {value: '19', text: 'Chave de Skate'},
+                {value: '24', text: 'Tábua'},
+                {value: '25', text: 'Lixa'}
             ],
             '19': [ // Proteções
-                {value: '18', text: 'Capacete'},
-                {value: '19', text: 'Joelheira'},
+                {value: '13', text: 'Capacete'},
+                {value: '14', text: 'Joelheira'},
                 {value: '22', text: 'Protetor de Punho'},
                 {value: '23', text: 'Cotoveleira'}
             ]

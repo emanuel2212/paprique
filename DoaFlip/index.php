@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-require "Connection.php";
+require "./pages/Connection.php";
 
 
 // Verifica se há mensagem de logout
@@ -106,7 +106,7 @@ $page_file = "";
 						<div class="right-content">
 							<ul class="list-main">
 								<?php if ($user_logged_in): ?>
-									<li><i class="ti-power-off"></i><a href="logout.php">Logout</a></li>
+									<li><i class="ti-power-off"></i><a href="?page=logout">Logout</a></li>
 								<?php else: ?>
 									<li><i class="ti-user"></i> <a href="?page=register">Registar</a></li>
 									<li><i class="ti-power-off"></i><a href="?page=login">Login</a></li>
@@ -213,10 +213,10 @@ $page_file = "";
 									<div class="navbar-collapse">
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
-												<li><i class="bi bi-tags"></i><a href="marcas.php">Marcas</a></li>
-												<li><a href="skates.php">Skate</a></li>
-												<li><a href="protecoes.php">Proteção</a></li>
-												<li><a href="sapatilhas.php">Sapatilhas</a></li>
+												<li><i class="bi bi-tags"></i><a href="?page=marcas">Marcas</a></li>
+												<li><a href="?page=skates">Skate</a></li>
+												<li><a href="?page=protecoes">Proteção</a></li>
+												<li><a href="?page=sapatilhas">Sapatilhas</a></li>
 
 											</ul>
 										</div>
@@ -242,25 +242,25 @@ $page_file = "";
 					switch ($page) {
 
 						case 'index':
-							$page_file = "index.php";
+							$page_file = "./pages/index.php";
 							break;
 
 						case 'logout':
 							// Em vez de incluir, redireciona diretamente
-							header('Location: logout.php');
+							header('Location: ./pages/logout.php');
 							exit();
 							break;
 
 						case 'register':
-							$page_file = "register.php";
+							$page_file = "./pages/register.php";
 							break;
 
 						case 'login':
-							$page_file = "login.php";
+							$page_file = "./pages/login.php";
 							break;
 
 						case 'marcas':
-							$page_file = "marcas.php";
+							$page_file = "./pages/marcas.php";
 							break;
 					}
 					if (!empty($page_file) && file_exists($page_file)) {

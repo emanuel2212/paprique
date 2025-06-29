@@ -24,6 +24,13 @@
             padding: 40px;
             text-align: center;
         }
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+            border-bottom: 3px solid #0d6efd;
+        }
+        .tab-content {
+            padding: 20px 0;
+        }
     </style>
 </head>
 
@@ -54,61 +61,190 @@
             <div class="card-body">
                 <?php
                 require 'Produtos.php';
-                $listUsers = new Produtos();
-                $resultUsers = $listUsers->list();
-
-                if (!empty($resultUsers)) {
-                    echo '<div class="table-responsive">';
-                    echo '<table class="table table-hover table-striped">';
-                    echo '<thead class="table-dark">';
-                    echo '<tr>';
-                    echo '<th width="10%"><i class="fas fa-hashtag me-1"></i> ID Produto</th>';
-                    echo '<th><i class=""></i> Nome do Produto</th>';  
-                    echo '<th><i class=""></i> Preço</th>';  
-                    echo '<th width="20%"><i class="fas fa-cogs me-1"></i> Ações</th>';
-                    echo '</tr>';
-                    echo '</thead>';
-                    echo '<tbody>';
-
-                    foreach ($resultUsers as $rowUser) {
-                        extract($rowUser);
-
-                        echo '<tr>';
-                        echo "<td class='fw-bold'>{$id_produto}</td>";
-                        echo "<td>{$nome_produto}</td>";
-                        echo "<td>{$preco}</td>";
-
-                        echo '<td class="d-flex gap-2">';
-                        echo "<a href='?page=ListProduto&id=$id_produto' class='btn btn-secondary btn-sm btn-action'>
-                                <i class='fas fa-eye'></i> VIsualizar
-                               </a>";
-                        echo "<a href='?page=editProduto&id=$id_produto' class='btn btn-warning btn-sm btn-action'>
-                                <i class='fas fa-edit me-1'></i> Editar
-                              </a>";
-                         echo "<a href='javascript:void(0)' 
-                                    onclick='if(confirm(\"Tem certeza que deseja excluir {$rowUser['nome_produto']}?\")) { window.location.href=\"?page=deleteProduto&id={$rowUser['id_produto']}\"; }' 
-                                    class='btn btn-danger btn-sm btn-action'>
-                                    <i class='fas fa-trash-alt me-1'></i> Apagar
-                                </a>";
-                        echo '</td>';
-                        echo '</tr>';
+                $produtos = new Produtos();
+                
+                // Obter produtos separados por categoria
+                $produtos_pecas = [];
+                $produtos_protecoes = [];
+                $produtos_sapatilhas = [];
+                
+                $todos_produtos = $produtos->list();
+                
+                if (!empty($todos_produtos)) {
+                    foreach ($todos_produtos as $produto) {
+                        if ($produto['id_categoria'] == 18) { // Skates
+                            $produtos_pecas[] = $produto;
+                        } elseif ($produto['id_categoria'] == 19) { // Proteções
+                            $produtos_protecoes[] = $produto;
+                        } elseif ($produto['id_categoria'] == 24) { // Sapatilhas (novo ID)
+                            $produtos_sapatilhas[] = $produto;
+                        }
                     }
-
-                    echo '</tbody>';
-                    echo '</table>';
-                    echo '</div>';
-                } else {
-                    echo '<div class="empty-state">';
-                    echo '<i class="fas fa-inbox fa-3x text-muted mb-3"></i>';
-                    echo '<h4 class="text-muted">Nenhum produto encontrado</h4>';
-                    echo '<p class="text-muted">Clique no botão "Cadastrar" para adicionar um novo produto</p>';
-                    echo '</div>';
                 }
                 ?>
+
+                <!-- Abas de navegação -->
+                <ul class="nav nav-tabs" id="produtosTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pecas-tab" data-bs-toggle="tab" data-bs-target="#pecas" type="button" role="tab">
+                            <i class="fas fa-skating"></i> Skates
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="protecoes-tab" data-bs-toggle="tab" data-bs-target="#protecoes" type="button" role="tab">
+                            <i class="fas fa-shield-alt me-1"></i> Proteções
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sapatilhas-tab" data-bs-toggle="tab" data-bs-target="#sapatilhas" type="button" role="tab">
+                            <i class="fas fa-shoe-prints me-1"></i> Sapatilhas
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Conteúdo das abas -->
+                <div class="tab-content" id="produtosTabContent">
+                    <!-- Tab Skates -->
+                    <div class="tab-pane fade show active" id="pecas" role="tabpanel">
+                        <?php if (!empty($produtos_pecas)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>
+                                            <th>Nome do Produto</th>  
+                                            <th>Preço</th>  
+                                            <th width="20%">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($produtos_pecas as $produto): ?>
+                                            <tr>
+                                                <td class='fw-bold'><?= $produto['id_produto'] ?></td>
+                                                <td><?= htmlspecialchars($produto['nome_produto']) ?></td>
+                                                <td>€ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                                <td class="d-flex gap-2">
+                                                    <a href='?page=ListProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-secondary btn-sm btn-action'>
+                                                        <i class='fas fa-eye'></i> Visualizar
+                                                    </a>
+                                                    <a href='?page=editProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-warning btn-sm btn-action'>
+                                                        <i class='fas fa-edit me-1'></i> Editar
+                                                    </a>
+                                                    <a href='javascript:void(0)' 
+                                                       onclick='if(confirm("Tem certeza que deseja excluir <?= addslashes($produto['nome_produto']) ?>?")) { window.location.href="?page=deleteProduto&id=<?= $produto['id_produto'] ?>"; }' 
+                                                       class='btn btn-danger btn-sm btn-action'>
+                                                        <i class='fas fa-trash-alt me-1'></i> Apagar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="empty-state">
+                                <i class="fas fa-tools fa-3x text-muted mb-3"></i>
+                                <h4 class="text-muted">Nenhuma peça encontrada</h4>
+                                <p class="text-muted">Cadastre novas Skates usando o botão acima</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Tab Proteções -->
+                    <div class="tab-pane fade" id="protecoes" role="tabpanel">
+                        <?php if (!empty($produtos_protecoes)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>
+                                            <th>Nome do Produto</th>  
+                                            <th>Preço</th>  
+                                            <th width="20%">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($produtos_protecoes as $produto): ?>
+                                            <tr>
+                                                <td class='fw-bold'><?= $produto['id_produto'] ?></td>
+                                                <td><?= htmlspecialchars($produto['nome_produto']) ?></td>
+                                                <td>€ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                                <td class="d-flex gap-2">
+                                                    <a href='?page=ListProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-secondary btn-sm btn-action'>
+                                                        <i class='fas fa-eye'></i> Visualizar
+                                                    </a>
+                                                    <a href='?page=editProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-warning btn-sm btn-action'>
+                                                        <i class='fas fa-edit me-1'></i> Editar
+                                                    </a>
+                                                    <a href='javascript:void(0)' 
+                                                       onclick='if(confirm("Tem certeza que deseja excluir <?= addslashes($produto['nome_produto']) ?>?")) { window.location.href="?page=deleteProduto&id=<?= $produto['id_produto'] ?>"; }' 
+                                                       class='btn btn-danger btn-sm btn-action'>
+                                                        <i class='fas fa-trash-alt me-1'></i> Apagar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="empty-state">
+                                <i class="fas fa-shield-alt fa-3x text-muted mb-3"></i>
+                                <h4 class="text-muted">Nenhuma proteção encontrada</h4>
+                                <p class="text-muted">Cadastre novas proteções usando o botão acima</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Tab Sapatilhas (NOVA ABA) -->
+                    <div class="tab-pane fade" id="sapatilhas" role="tabpanel">
+                        <?php if (!empty($produtos_sapatilhas)): ?>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th width="10%"><i class="fas fa-hashtag me-1"></i> ID</th>
+                                            <th>Nome do Produto</th>  
+                                            <th>Preço</th>  
+                                            <th width="20%">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($produtos_sapatilhas as $produto): ?>
+                                            <tr>
+                                                <td class='fw-bold'><?= $produto['id_produto'] ?></td>
+                                                <td><?= htmlspecialchars($produto['nome_produto']) ?></td>
+                                                <td>€ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                                                <td class="d-flex gap-2">
+                                                    <a href='?page=ListProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-secondary btn-sm btn-action'>
+                                                        <i class='fas fa-eye'></i> Visualizar
+                                                    </a>
+                                                    <a href='?page=editProduto&id=<?= $produto['id_produto'] ?>' class='btn btn-warning btn-sm btn-action'>
+                                                        <i class='fas fa-edit me-1'></i> Editar
+                                                    </a>
+                                                    <a href='javascript:void(0)' 
+                                                       onclick='if(confirm("Tem certeza que deseja excluir <?= addslashes($produto['nome_produto']) ?>?")) { window.location.href="?page=deleteProduto&id=<?= $produto['id_produto'] ?>"; }' 
+                                                       class='btn btn-danger btn-sm btn-action'>
+                                                        <i class='fas fa-trash-alt me-1'></i> Apagar
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="empty-state">
+                                <i class="fas fa-shoe-prints fa-3x text-muted mb-3"></i>
+                                <h4 class="text-muted">Nenhuma sapatilha encontrada</h4>
+                                <p class="text-muted">Cadastre novas sapatilhas usando o botão acima</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </body>
-
 </html>
