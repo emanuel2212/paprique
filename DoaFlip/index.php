@@ -93,9 +93,9 @@ $page_file = "";
 						<div class="top-left">
 							<ul class="list-main">
 								<?php if ($user_logged_in): ?>
-									<a href="#">Olá, <?php echo htmlspecialchars($username); ?>! Seja Bem vindo(a)!!</a>
+									<a href="">Olá, <?php echo htmlspecialchars($username); ?>! Seja Bem vindo(a)!!</a>
 								<?php else: ?>
-									<a href="#">Olá, Seja Bem vindo(a)!!</a>
+									<a href="">Olá, Seja Bem vindo(a)!!</a>
 								<?php endif; ?>
 							</ul>
 						</div>
