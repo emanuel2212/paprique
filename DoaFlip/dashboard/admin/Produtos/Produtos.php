@@ -4,7 +4,6 @@
  * Classe para listar, visualizar, criar e editar categorias no banco de dados.
  */
 ob_start(); // Inicia o buffer de saída para capturar mensagens de erro e redirecionamentos
- require_once './bd/Connection.php';
  
 
 class Produtos extends Connection
