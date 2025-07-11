@@ -83,9 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Inserir no banco
             $insert = $pdo->prepare("INSERT INTO utilizador 
-                (id_tipo_utilizador, username, nome_completo, email, password, morada, telefone, nif, codigo_postal) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                
+    (id_tipo_utilizador, username, nome_completo, email, password, morada, telefone, nif, codigo_postal, foto_perfil) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'images/default-profile.png')");
+
             $success = $insert->execute([
                 $tipo,
                 $username,
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             error_log("Erro no registro: " . $e->getMessage());
         }
     }
-    
+
     // Se houver erros, guarda na sessão e mantém os dados preenchidos
     $_SESSION['register_errors'] = $erros;
     $_SESSION['old_input'] = $_POST;
@@ -150,8 +150,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                     <div class="form-group">
                                         <label>Nome Completo<span>*</span></label>
-                                        <input type="text" name="nome_completo" required
+                                        <input type="text" name="nome_completo" id="nome_completo" required
                                             value="<?= isset($_SESSION['old_input']['nome_completo']) ? htmlspecialchars($_SESSION['old_input']['nome_completo']) : '' ?>">
+                                        <small class="form-text text-muted">Apenas letras e espaços</small>
                                     </div>
 
                                     <div class="form-group">
@@ -212,17 +213,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 </body>
 <script>
-document.getElementById('codigo_postal').addEventListener('input', function(e) {
-    let v = this.value.replace(/\D/g, '');
-    if (v.length > 4) {
-        this.value = v.slice(0,4) + '-' + v.slice(4,7);
-    } else {
-        this.value = v;
-    }
-});
+    // Validação do Código Postal
+    document.getElementById('codigo_postal').addEventListener('input', function(e) {
+        let v = this.value.replace(/\D/g, '');
+        if (v.length > 4) {
+            this.value = v.slice(0, 4) + '-' + v.slice(4, 7);
+        } else {
+            this.value = v;
+        }
+    });
 
-// Validação do username no frontend
-document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-    this.value = this.value.replace(/[^a-zA-Z0-9_]/g, '');
-});
+    // Validação do username no frontend
+    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^a-zA-Z0-9_]/g, '');
+    });
+
+    // Validação do nome completo (não permite números nem caracteres especiais)
+    document.getElementById('nome_completo').addEventListener('input', function(e) {
+        // Permite letras, espaços e alguns caracteres especiais comuns em nomes (como ç, ã, é, etc.)
+        this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+        
+        // Remove múltiplos espaços consecutivos
+        this.value = this.value.replace(/\s{2,}/g, ' ');
+    });
+
+    // Validação do nome completo no submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const nomeCompleto = document.getElementById('nome_completo').value;
+        const regex = /^[a-zA-ZÀ-ÿ\s]+$/;
+        
+        if (!regex.test(nomeCompleto)) {
+            alert('O nome completo deve conter apenas letras e espaços.');
+            e.preventDefault();
+        }
+    });
 </script>

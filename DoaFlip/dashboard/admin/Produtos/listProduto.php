@@ -139,7 +139,7 @@ unset($_SESSION['msg']);
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-3 detail-label">Marca:</div>
-                            <div class="col-md-9 detail-value"><?= displayValue($detalhes['marca']) ?></div>
+                            <div class="col-md-9 detail-value"><?= displayValue($detalhes['nome_marca']) ?></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-3 detail-label">Categoria:</div>

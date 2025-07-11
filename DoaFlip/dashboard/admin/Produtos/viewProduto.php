@@ -95,11 +95,6 @@
                             <i class="fas fa-shield-alt me-1"></i> Proteções
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="sapatilhas-tab" data-bs-toggle="tab" data-bs-target="#sapatilhas" type="button" role="tab">
-                            <i class="fas fa-shoe-prints me-1"></i> Sapatilhas
-                        </button>
-                    </li>
                 </ul>
 
                 <!-- Conteúdo das abas -->

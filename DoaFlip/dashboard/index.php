@@ -420,7 +420,6 @@ $page_file = "";
               $page_file = "./admin/Produtos/deleteProduto.php";
               break;
 
-
             case 'logout':
               $page_file = "./bd/logout.php";
               break;

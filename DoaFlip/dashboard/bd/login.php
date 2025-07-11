@@ -12,6 +12,8 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verifica se os campos foram enviados
     if (empty($_POST['username']) || empty($_POST['password'])) {

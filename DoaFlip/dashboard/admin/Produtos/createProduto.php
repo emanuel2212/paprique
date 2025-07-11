@@ -1,5 +1,5 @@
 <?php
-require './bd/Connection.php'; 
+require './bd/Connection.php';
 require 'Produtos.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -21,21 +21,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dados['link_imagem'] = $nome_arquivo;
     }
 
+
+
     // Criar conexão
     $conn = new Connection(); // Agora vai funcionar
     $pdo = $conn->connect();
 
     try {
+        $marca = trim($_POST['marca']);
+        $stmt = $pdo->prepare("SELECT id_marca FROM marca WHERE nome_marca = ?");
+        $stmt->execute([$marca]);
+        $marca_existente = $stmt->fetch();
+
+        if ($marca_existente) {
+            $id_marca = $marca_existente['id_marca'];
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO marca (nome_marca) VALUES (?)");
+            $stmt->execute([$marca]);
+            $id_marca = $pdo->lastInsertId();
+        }
+
+
         // Inserir produto
         $sql = "INSERT INTO produtos 
-               (id_categoria, id_subcategoria, marca, nome_produto, descricao, preco) 
+               (id_categoria, id_subcategoria, id_marca , nome_produto, descricao, preco) 
                VALUES (?, ?, ?, ?, ?, ?)";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             $dados['id_categoria'],
             $dados['id_subcategoria'],
-            $dados['marca'],
+            $id_marca,
             $dados['nome_produto'],
             $dados['descricao'],
             $dados['preco']
@@ -53,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['msg'] = '<div class="alert alert-success">Produto cadastrado com sucesso!</div>';
         header("Location: ?page=viewProduto");
         exit();
-
     } catch (PDOException $e) {
         $_SESSION['msg'] = '<div class="alert alert-danger">Erro: ' . $e->getMessage() . '</div>';
         header("Location: ?page=createProduto");
@@ -196,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <span class="input-group-text"><i class="fas fa-upload"></i></span>
                         <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*" required>
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-12 mt-4">
                     <button type="submit" href="?page=viewProduto" name="AddProduto" class="btn btn-success btn-lg w-100 btn-submit"
@@ -209,59 +224,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-    $(document).ready(function() {
-        // Dados das subcategorias organizados por categoria
-        const subcategorias = {
-            '18': [ // Peças
-                {value: '9', text: 'Trucks'},
-                {value: '10', text: 'Rodas'},
-                {value: '15', text: 'Rolamentos'},
-                {value: '16', text: 'Amortecedores'},
-                {value: '17', text: 'Porcas e Parafusos'},
-                {value: '18', text: 'Cera de Skate'},
-                {value: '19', text: 'Chave de Skate'},
-                {value: '24', text: 'Tábua'},
-                {value: '25', text: 'Lixa'}
-            ],
-            '19': [ // Proteções
-                {value: '13', text: 'Capacete'},
-                {value: '14', text: 'Joelheira'},
-                {value: '22', text: 'Protetor de Punho'},
-                {value: '23', text: 'Cotoveleira'}
-            ]
-        };
+        $(document).ready(function() {
+            // Dados das subcategorias organizados por categoria
+            const subcategorias = {
+                '18': [ // Peças
+                    {
+                        value: '9',
+                        text: 'Trucks'
+                    },
+                    {
+                        value: '10',
+                        text: 'Rodas'
+                    },
+                    {
+                        value: '15',
+                        text: 'Rolamentos'
+                    },
+                    {
+                        value: '16',
+                        text: 'Amortecedores'
+                    },
+                    {
+                        value: '17',
+                        text: 'Porcas e Parafusos'
+                    },
+                    {
+                        value: '18',
+                        text: 'Cera de Skate'
+                    },
+                    {
+                        value: '19',
+                        text: 'Chave de Skate'
+                    },
+                    {
+                        value: '24',
+                        text: 'Tábua'
+                    },
+                    {
+                        value: '25',
+                        text: 'Lixa'
+                    }
+                ],
+                '19': [ // Proteções
+                    {
+                        value: '13',
+                        text: 'Capacete'
+                    },
+                    {
+                        value: '14',
+                        text: 'Joelheira'
+                    },
+                    {
+                        value: '22',
+                        text: 'Protetor de Punho'
+                    },
+                    {
+                        value: '23',
+                        text: 'Cotoveleira'
+                    }
+                ]
+            };
 
-        // Quando a categoria mudar
-        $('#id_categoria').change(function() {
-            const categoriaId = $(this).val();
-            const $subcategoriaSelect = $('#id_subcategoria');
-            
-            // Limpar e desabilitar se não houver categoria selecionada
-            $subcategoriaSelect.empty();
-            
-            if (!categoriaId) {
-                $subcategoriaSelect.append('<option value="">Selecione uma categoria primeiro</option>');
-                return;
-            }
-            
-            // Adicionar opção padrão
-            $subcategoriaSelect.append('<option value="">Selecione...</option>');
-            
-            // Adicionar subcategorias correspondentes
-            subcategorias[categoriaId].forEach(function(subcat) {
-                // Verificar se esta subcategoria deve ser selecionada
-                const selected = <?= isset($formData['id_subcategoria']) ? "'" . $formData['id_subcategoria'] . "'" : 'null' ?>;
-                const isSelected = selected && selected == subcat.value ? 'selected' : '';
-                
-                $subcategoriaSelect.append(`<option value="${subcat.value}" ${isSelected}>${subcat.text}</option>`);
+            // Quando a categoria mudar
+            $('#id_categoria').change(function() {
+                const categoriaId = $(this).val();
+                const $subcategoriaSelect = $('#id_subcategoria');
+
+                // Limpar e desabilitar se não houver categoria selecionada
+                $subcategoriaSelect.empty();
+
+                if (!categoriaId) {
+                    $subcategoriaSelect.append('<option value="">Selecione uma categoria primeiro</option>');
+                    return;
+                }
+
+                // Adicionar opção padrão
+                $subcategoriaSelect.append('<option value="">Selecione...</option>');
+
+                // Adicionar subcategorias correspondentes
+                subcategorias[categoriaId].forEach(function(subcat) {
+                    // Verificar se esta subcategoria deve ser selecionada
+                    const selected = <?= isset($formData['id_subcategoria']) ? "'" . $formData['id_subcategoria'] . "'" : 'null' ?>;
+                    const isSelected = selected && selected == subcat.value ? 'selected' : '';
+
+                    $subcategoriaSelect.append(`<option value="${subcat.value}" ${isSelected}>${subcat.text}</option>`);
+                });
             });
+
+            // Disparar o evento change ao carregar se já houver uma categoria selecionada
+            if ($('#id_categoria').val()) {
+                $('#id_categoria').trigger('change');
+            }
         });
-        
-        // Disparar o evento change ao carregar se já houver uma categoria selecionada
-        if ($('#id_categoria').val()) {
-            $('#id_categoria').trigger('change');
-        }
-    });
     </script>
 </body>
+
 </html>
