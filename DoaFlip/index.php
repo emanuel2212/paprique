@@ -283,7 +283,7 @@ $marca = isset($_GET['marca']) ? $_GET['marca'] : '';
     </header>
     <!--/ End Header -->
 
-    <?php if ($page === 'login' || $page === 'register' || $page === 'ListProduto' || $page === 'carrinho' || $page === 'profile' || $page === 'search'): ?>
+    <?php if ($page === 'login' || $page === 'register' || $page === 'ListProduto' || $page === 'carrinho' || $page === 'profile' || $page === 'search' || $page === 'checkout'): ?>
         <!-- Mostra apenas o formulário correspondente -->
         <div class="product-area section">
             <div class="container">
@@ -302,6 +302,8 @@ $marca = isset($_GET['marca']) ? $_GET['marca'] : '';
                             include("./pages/profile.php");
                         } elseif ($page === 'search' && file_exists("./pages/search_results.php")) {
                             include("./pages/search_results.php");
+                        } elseif ($page === 'checkout' && file_exists("./pages/checkout.php")) {
+                            include("./pages/checkout.php");
                         }
 
                         ?>

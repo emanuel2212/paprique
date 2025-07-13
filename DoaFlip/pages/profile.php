@@ -17,7 +17,7 @@ $userData = $user->view();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Filtra os dados do POST
     $formData = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-    
+
     // Adiciona o ID do utilizador aos dados do formulário
     $formData['id_utilizador'] = $_SESSION['user']['id_utilizador'];
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validação dos campos obrigatórios
         $requiredFields = ['username', 'nome_completo', 'email'];
         $isValid = true;
-        
+
         foreach ($requiredFields as $field) {
             if (empty($formData[$field])) {
                 $erro = "O campo " . ucfirst(str_replace('_', ' ', $field)) . " é obrigatório!";
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['user']['telefone'] = $formData['telefone'] ?? null;
                 $_SESSION['user']['codigo_postal'] = $formData['codigo_postal'] ?? null;
                 $_SESSION['user']['nif'] = $formData['nif'] ?? null;
-                
+
                 $_SESSION['mensagem'] = "Perfil atualizado com sucesso!";
                 header("Location: ?page=profile");
                 exit();
@@ -95,10 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Valida o tipo e tamanho do arquivo (máx 2MB)
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         $maxSize = 2 * 1024 * 1024; // 2MB
-        
-        if (in_array($_FILES['foto_perfil']['type'], $allowedTypes) && 
-            $_FILES['foto_perfil']['size'] <= $maxSize) {
-            
+
+        if (
+            in_array($_FILES['foto_perfil']['type'], $allowedTypes) &&
+            $_FILES['foto_perfil']['size'] <= $maxSize
+        ) {
+
             $ext = pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION);
             $filename = 'profile_' . $_SESSION['user']['id_utilizador'] . '_' . time() . '.' . $ext;
             $targetPath = $uploadDir . $filename;
@@ -106,11 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $targetPath)) {
                 if ($user->updateProfilePicture($_SESSION['user']['id_utilizador'], $targetPath)) {
                     // Remove a foto antiga se não for a padrão
-                    if ($_SESSION['user']['foto_perfil'] !== 'images/default-profile.png' && 
-                        file_exists($_SESSION['user']['foto_perfil'])) {
+                    if (
+                        $_SESSION['user']['foto_perfil'] !== 'images/default-profile.png' &&
+                        file_exists($_SESSION['user']['foto_perfil'])
+                    ) {
                         unlink($_SESSION['user']['foto_perfil']);
                     }
-                    
+
                     $_SESSION['user']['foto_perfil'] = $targetPath;
                     $_SESSION['mensagem'] = "Foto de perfil atualizada com sucesso!";
                     header("Location: ?page=profile");
@@ -139,6 +143,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(13, 110, 253, 0.05);
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0, 0, 0, .125);
+        }
+
+        .accordion-item {
+            border-radius: 8px !important;
+            overflow: hidden;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pendente {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processando {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        .status-enviada {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-entregue {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
         .profile-container {
             max-width: 1000px;
             margin: 30px auto;
@@ -297,15 +349,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
-            
+
         <div class="profile-header">
             <div class="profile-picture-container">
                 <img src="<?php echo !empty($userData['foto_perfil']) ? htmlspecialchars($userData['foto_perfil']) : 'images/default-profile.png'; ?>"
                     class="profile-picture"
                     alt="Foto de perfil">
                 <button class="change-photo-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#changePhotoModal">
+                    data-bs-toggle="modal"
+                    data-bs-target="#changePhotoModal">
                     <i class="fas fa-camera"></i>
                 </button>
             </div>
@@ -315,10 +367,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="badge bg-primary bg-gradient">
                     <i class="fas fa-envelope me-1"></i> <?php echo htmlspecialchars($userData['email']); ?>
                 </span>
-                <?php if(!empty($userData['telefone'])): ?>
-                <span class="badge bg-secondary bg-gradient">
-                    <i class="fas fa-phone me-1"></i> <?php echo htmlspecialchars($userData['telefone']); ?>
-                </span>
+                <?php if (!empty($userData['telefone'])): ?>
+                    <span class="badge bg-secondary bg-gradient">
+                        <i class="fas fa-phone me-1"></i> <?php echo htmlspecialchars($userData['telefone']); ?>
+                    </span>
                 <?php endif; ?>
             </div>
         </div>
@@ -444,28 +496,150 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- Histórico de compras -->
+           
             <div class="tab-pane fade" id="orders" role="tabpanel">
                 <h5 class="profile-section-title">
                     <i class="fas fa-history me-2"></i> Minhas Compras
                 </h5>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nº Encomenda</th>
-                                <th>Data</th>
-                                <th>Valor</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="5" class="text-center">Nenhuma encomenda encontrada.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+
+                <?php
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/paprique/DoaFlip/dashboard/bd/Encomendas.php';
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/paprique/DoaFlip/dashboard/bd/EncomendasProdutos.php';
+
+                $encomendas = new Encomendas();
+                $userOrders = $encomendas->getByUser($_SESSION['user']['id_utilizador']);
+
+                if (empty($userOrders)): ?>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Nenhuma encomenda encontrada.
+                    </div>
+                <?php else: ?>
+                    <div class="accordion" id="ordersAccordion">
+                        <?php foreach ($userOrders as $order):
+                            $encomendasProdutos = new EncomendasProdutos();
+                            $orderItems = $encomendasProdutos->getByEncomenda($order['id_encomenda']);
+                            $orderDate = new DateTime($order['data_encomenda']);
+                        ?>
+                            <div class="accordion-item mb-3 border-0 shadow-sm">
+                                <h2 class="accordion-header" id="heading<?php echo $order['id_encomenda']; ?>">
+                                    <button class="accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapse<?php echo $order['id_encomenda']; ?>"
+                                        aria-expanded="false"
+                                        aria-controls="collapse<?php echo $order['id_encomenda']; ?>">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <div>
+                                                <span class="fw-bold me-3">Encomenda #<?php echo $order['id_encomenda']; ?></span>
+                                                <span class="text-muted"><?php echo $orderDate->format('d/m/Y H:i'); ?></span>
+                                            </div>
+                                            <div>
+                                                <span class="badge bg-<?php
+                                                                        switch ($order['status']) {
+                                                                            case 'Pendente':
+                                                                                echo 'warning';
+                                                                                break;
+                                                                            case 'Processando':
+                                                                                echo 'info';
+                                                                                break;
+                                                                            case 'Enviada':
+                                                                                echo 'primary';
+                                                                                break;
+                                                                            case 'Entregue':
+                                                                                echo 'success';
+                                                                                break;
+                                                                            case 'Cancelada':
+                                                                                echo 'danger';
+                                                                                break;
+                                                                            default:
+                                                                                echo 'secondary';
+                                                                        }
+                                                                        ?>">
+                                                    <?php echo htmlspecialchars($order['status']); ?>
+                                                </span>
+                                                <span class="ms-3 fw-bold">€<?php echo number_format($order['valor_total'], 2, ',', '.'); ?></span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="collapse<?php echo $order['id_encomenda']; ?>"
+                                    class="accordion-collapse collapse"
+                                    aria-labelledby="heading<?php echo $order['id_encomenda']; ?>"
+                                    data-bs-parent="#ordersAccordion">
+                                    <div class="accordion-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Produto</th>
+                                                        <th class="text-end">Preço Unitário</th>
+                                                        <th class="text-center">Quantidade</th>
+                                                        <th class="text-end">Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($orderItems as $item): ?>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <?php if (!empty($item['link_imagem'])): ?>
+                                                                        <img src="images/<?php echo htmlspecialchars($item['link_imagem']); ?>"
+                                                                            class="img-thumbnail me-3"
+                                                                            style="width: 60px; height: 60px; object-fit: cover;"
+                                                                            alt="<?php echo htmlspecialchars($item['nome_produto']); ?>">
+                                                                    <?php endif; ?>
+                                                                    <div>
+                                                                        <h6 class="mb-1"><?php echo htmlspecialchars($item['nome_produto']); ?></h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">€<?php echo number_format($item['preco_unitario'], 2, ',', '.'); ?></td>
+                                                            <td class="text-center"><?php echo $item['quantidade']; ?></td>
+                                                            <td class="text-end">€<?php echo number_format($item['preco_unitario'] * $item['quantidade'], 2, ',', '.'); ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    <tr class="table-light">
+                                                        <td colspan="3" class="text-end fw-bold">Total:</td>
+                                                        <td class="text-end fw-bold">€<?php echo number_format($order['valor_total'], 2, ',', '.'); ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="p-3 border-top">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h6 class="mb-2">Informações de Envio</h6>
+                                                    <p class="mb-1">
+                                                        <i class="fas fa-user me-2"></i>
+                                                        <?php echo htmlspecialchars($userData['nome_completo']); ?>
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i class="fas fa-map-marker-alt me-2"></i>
+                                                        <?php echo htmlspecialchars($userData['morada']); ?>
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i class="fas fa-mail-bulk me-2"></i>
+                                                        <?php echo htmlspecialchars($userData['codigo_postal']); ?>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6 text-md-end">
+                                                    <h6 class="mb-2">Método de Pagamento</h6>
+                                                    <p class="mb-1">
+                                                        <i class="fas fa-credit-card me-2"></i>
+                                                        <?php echo htmlspecialchars($order['metodo_pagamento'] ?? 'Não especificado'); ?>
+                                                    </p>
+                                                    <?php if (!empty($order['observacoes'])): ?>
+                                                        <h6 class="mt-3 mb-2">Observações</h6>
+                                                        <p><?php echo htmlspecialchars($order['observacoes']); ?></p>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -483,10 +657,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="text-center mb-4">
-                            <img id="imagePreview" src="<?php echo !empty($userData['foto_perfil']) ? htmlspecialchars($userData['foto_perfil']) : 'images/default-profile.png'; ?>" 
-                                 class="img-thumbnail rounded-circle" 
-                                 style="width: 150px; height: 150px; object-fit: cover;"
-                                 alt="Pré-visualização">
+                            <img id="imagePreview" src="<?php echo !empty($userData['foto_perfil']) ? htmlspecialchars($userData['foto_perfil']) : 'images/default-profile.png'; ?>"
+                                class="img-thumbnail rounded-circle"
+                                style="width: 150px; height: 150px; object-fit: cover;"
+                                alt="Pré-visualização">
                         </div>
                         <div class="mb-3">
                             <label for="foto_perfil" class="form-label">Selecione uma nova imagem</label>
@@ -503,21 +677,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Mostrar preview da imagem selecionada
         document.getElementById('foto_perfil').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
             const file = this.files[0];
-            
+
             if (file) {
                 const reader = new FileReader();
-                
+
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.classList.add('shadow-sm');
                 }
-                
+
                 reader.readAsDataURL(file);
             }
         });

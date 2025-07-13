@@ -15,14 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['atualizar_carrinho'])
     foreach ($_POST['quantidade'] as $id_prod => $quantidade) {
         $id_prod = intval($id_prod);
         $quantidade = intval($quantidade);
-        
+
         if ($quantidade > 0 && isset($_SESSION['carrinho'][$id_prod])) {
             $_SESSION['carrinho'][$id_prod]['quantidade'] = $quantidade;
         } elseif (isset($_SESSION['carrinho'][$id_prod])) {
             unset($_SESSION['carrinho'][$id_prod]);
         }
     }
-    
+
     $_SESSION['mensagem'] = "Carrinho atualizado com sucesso!";
     header("Location: ?page=carrinho");
     exit();
@@ -179,66 +179,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['atualizar_carrinho'])
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         padding: 20px;
     }
-    
+
     .carrinho-table {
         width: 100%;
         border-collapse: collapse;
     }
-    
+
     .carrinho-table th {
         background-color: #f8f9fa;
         padding: 12px;
         text-align: left;
         border-bottom: 2px solid #dee2e6;
     }
-    
+
     .carrinho-table td {
         padding: 12px;
         border-bottom: 1px solid #dee2e6;
         vertical-align: middle;
     }
-    
+
     .produto-info {
         display: flex;
         align-items: center;
         gap: 15px;
     }
-    
+
     .produto-imagem {
         width: 80px;
         height: 80px;
         object-fit: cover;
         border-radius: 4px;
     }
-    
+
     .quantidade-input {
         width: 70px;
         text-align: center;
     }
-    
+
     .botoes-carrinho {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
     }
-    
+
     .carrinho-total {
         font-size: 1.25rem;
         color: #333;
     }
-    
+
     @media (max-width: 768px) {
         .carrinho-table thead {
             display: none;
         }
-        
+
         .carrinho-table tr {
             display: block;
             margin-bottom: 15px;
             border: 1px solid #dee2e6;
             border-radius: 4px;
         }
-        
+
         .carrinho-table td {
             display: flex;
             justify-content: space-between;
@@ -246,19 +246,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['atualizar_carrinho'])
             padding: 8px 12px;
             border-bottom: none;
         }
-        
+
         .carrinho-table td::before {
             content: attr(data-label);
             font-weight: bold;
             margin-right: 10px;
         }
-        
+
         .produto-info {
             flex-direction: column;
             align-items: flex-start;
             gap: 5px;
         }
-        
+
         .botoes-carrinho {
             flex-direction: column;
             gap: 10px;

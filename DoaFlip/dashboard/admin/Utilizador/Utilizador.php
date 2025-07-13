@@ -9,11 +9,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/paprique/DoaFlip/dashboard/bd/Connect
 class Utilizador extends Connection
 {
 
-    /**
-     * Conexão com o banco de dados.
-     * @var object
-     */
-    public object $conn;
 
     /**
      * Dados do formulário para criação e edição de um novo Utilizador.
