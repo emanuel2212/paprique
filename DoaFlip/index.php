@@ -192,7 +192,7 @@ $products_per_page = 10;
 
     .product-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 10px 20px rgba(252, 251, 251, 0.1);
     }
 
     .pagination {
@@ -262,13 +262,13 @@ $products_per_page = 10;
         display: flex;
         align-items: center;
         padding: 10px 15px;
-        color: #333;
+        color: white;
         text-decoration: none;
         transition: all 0.3s ease;
     }
 
     .nav-link:hover {
-        color: #0d6efd;
+        color: #fbfcfdff;
     }
 
     .dropdown-menu {
@@ -283,9 +283,9 @@ $products_per_page = 10;
         font-size: 14px;
         text-align: left;
         background-color: #fff;
-        border: 1px solid rgba(0, 0, 0, .15);
+        border: 1px solid rgba(248, 244, 244, 0.92);
         border-radius: 4px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(249, 245, 245, 0.99);
     }
 
     .dropdown:hover .dropdown-menu {

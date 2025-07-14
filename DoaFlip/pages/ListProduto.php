@@ -82,6 +82,190 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
+ .navbar-nav .dropdown-menu {
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 1);
+        border: none;
+        min-width: 300px;
+    }
+
+    .dropdown-marcas-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .navbar-nav .dropdown-menu li a {
+        padding: 8px 12px;
+        border-radius: 4px;
+        color: #333;
+        transition: all 0.3s ease;
+        display: block;
+    }
+
+    .navbar-nav .dropdown-menu li a:hover {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+        transform: translateX(3px);
+    }
+
+    .navbar-nav .dropdown-menu h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0d6efd;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .no-products {
+        opacity: 0.6;
+    }
+
+    .no-products span {
+        font-size: 0.8em;
+        color: #777;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Novos estilos para promoções */
+    .promo-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff5722;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(252, 251, 251, 0.1);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .pagination a {
+        color: #333;
+        padding: 8px 16px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .pagination a.active {
+        background-color: #0d6efd;
+        color: white;
+        border: 1px solid #0d6efd;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+
+    .section-title {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+        display: inline-block;
+        padding-bottom: 10px;
+        position: relative;
+    }
+
+    .section-title h2:after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 3px;
+        bottom: 0;
+        left: 0;
+        background-color: #0d6efd;
+    }
+
+    .menu-area {
+        width: 100%;
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .nav-item {
+        position: relative;
+        list-style: none;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #fbfcfdff;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        min-width: 250px;
+        padding: 10px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        background-color: #fff;
+        border: 1px solid rgba(248, 244, 244, 0.92);
+        border-radius: 4px;
+        box-shadow: 0 6px 12px rgba(249, 245, 245, 0.99);
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
 .single-product:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
