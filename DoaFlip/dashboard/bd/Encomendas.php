@@ -251,7 +251,7 @@ class Encomendas extends Connection
 
             // Conteúdo do email
             $mail->isHTML(true);
-            $mail->Subject = 'Confirmação de Encomenda - DoaFlip';
+            $mail->Subject = 'Encomenda - DoaFlip';
             $mail->Body = $emailBody;
             $mail->AltBody = strip_tags(str_replace('<br>', "\n", $emailBody));
 

@@ -69,38 +69,6 @@ class Produtos extends Connection
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRelatedProducts($id_produto, $limit = 4)
-    {
-        // Primeiro obtemos a categoria e subcategoria do produto atual
-        $sql = "SELECT id_categoria, id_subcategoria FROM produtos WHERE id_produto = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$id_produto]);
-        $current_product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$current_product) {
-            return [];
-        }
-
-        // Buscamos produtos da mesma categoria e subcategoria (excluindo o produto atual)
-        $sql = "SELECT P.*, I.link_imagem, IFNULL(M.nome_marca, 'Sem marca') as marca 
-            FROM produtos P 
-            LEFT JOIN imagens I ON I.id_produto = P.id_produto
-            LEFT JOIN marca M ON M.id_marca = P.id_marca
-            WHERE (P.id_categoria = :id_categoria OR P.id_subcategoria = :id_subcategoria)
-            AND P.id_produto != :id_produto
-            ORDER BY RAND()
-            LIMIT :limit";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':id_categoria', $current_product['id_categoria'], PDO::PARAM_INT);
-        $stmt->bindValue(':id_subcategoria', $current_product['id_subcategoria'], PDO::PARAM_INT);
-        $stmt->bindValue(':id_produto', $id_produto, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function list(): array
     {
         // Estabelece a conexão com o banco de dados.
@@ -183,7 +151,7 @@ class Produtos extends Connection
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     public function create(): bool
     {
         $this->conn = $this->connect();
@@ -334,37 +302,6 @@ class Produtos extends Connection
         } else {
             return false;
         }
-    }
-    public function filtrarProdutos($filtro, $valor)
-    {
-        $sql = "SELECT P.*, I.link_imagem, IFNULL(M.nome_marca, 'Sem marca') as marca 
-            FROM produtos P 
-            LEFT JOIN imagens I ON I.id_produto = P.id_produto
-            LEFT JOIN marca M ON M.id_marca = P.id_marca";
-
-        switch ($filtro) {
-            case 'marca':
-                $sql .= " WHERE M.nome_marca = :valor";
-                break;
-            case 'subcategoria':
-                $sql .= " JOIN subcategorias S ON P.id_subcategoria = S.id_subcategoria
-                     WHERE S.nome_subcategoria = :valor";
-                break;
-            case 'categoria':
-                $sql .= " JOIN categorias C ON P.id_categoria = C.id_categoria
-                     WHERE C.nome_categoria = :valor";
-                break;
-            default:
-                return [];
-        }
-
-        $sql .= " ORDER BY P.id_produto DESC";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':valor', $valor);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
