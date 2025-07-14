@@ -233,26 +233,6 @@ unset($_SESSION['msg']);
             </div>
         </div>
 
-        <div class="card detail-card">
-            <div class="card-header bg-dark text-white">
-                <i class="fas fa-calendar-alt me-1"></i> Informações do Sistema
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-md-3 detail-label">Data de Criação:</div>
-                    <div class="col-md-9 detail-value">
-                        <?= isset($detalhes['data_criacao']) ? date('d/m/Y H:i', strtotime($detalhes['data_criacao'])) : displayValue(null) ?>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 detail-label">Última Atualização:</div>
-                    <div class="col-md-9 detail-value">
-                        <?= isset($detalhes['data_atualizado']) ? date('d/m/Y H:i', strtotime($detalhes['data_atualizado'])) : displayValue(null) ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -155,7 +155,7 @@ class Produtos extends Connection
             return false;
         }
     }
-
+    
     public function listMarcas(): array
     {
         $this->conn = $this->connect();

@@ -8,12 +8,6 @@ require_once "Connection.php";
 if (isset($_GET['subcategoria'])) {
     $subcategoria = $_GET['subcategoria'];
     $produtos = new Produtos();
-
-    // Verifica se existem produtos nesta subcategoria
-    $id_subcategoria = $produtos->getIdSubcategoriaByName($subcategoria);
-    if ($id_subcategoria && !$produtos->checkProdutosBySubcategoria($id_subcategoria)) {
-        echo '<div class="alert alert-warning">Nenhum produto disponível na subcategoria "' . htmlspecialchars($subcategoria) . '".</div>';
-    }
 }
 
 class ListProduto
@@ -75,10 +69,64 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 }
 ?>
 
+
 <!-- Adicione isso no head do seu template ou antes do conteúdo -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>.single-product {
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
 
+.single-product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-image .button {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.single-product:hover .product-image .button {
+    bottom: 20px;
+    opacity: 1;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-info .category {
+    font-size: 12px;
+    color: #777;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.product-info .title {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.product-info .price {
+    font-weight: bold;
+    color: #333;
+}</style>
 <!-- Breadcrumbs corrigido -->
 <div class="py-3 bg-light mb-4">
     <div class="container">
@@ -260,18 +308,58 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <p class="text-center text-muted mb-0">Você também pode gostar destes produtos</p>
             </div>
         </div>
-        <div class="row">
+        
+        <?php
+        $produtos_class = new Produtos();
+        $related_products = $produtos_class->getRelatedProducts($produto_id, 4);
+        
+        if (!empty($related_products)): ?>
+            <div class="row">
+                <?php foreach ($related_products as $related): 
+                    $preco_formatado = number_format($related['preco'], 2, ',', '.');
+                    $imagem = !empty($related['link_imagem']) ? "images/{$related['link_imagem']}" : "https://via.placeholder.com/300x300";
+                ?>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="single-product">
+                            <div class="product-image">
+                                <img src="<?= $imagem ?>" alt="<?= htmlspecialchars($related['nome_produto']) ?>" style="height: 200px; object-fit: cover;">
+                                <div class="button">
+                                    <a href="index.php?page=ListProduto&id=<?= $related['id_produto'] ?>" class="btn">
+                                        <i class="ti-eye"></i> Ver Detalhes
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category"><?= htmlspecialchars($related['marca']) ?></span>
+                                <h4 class="title">
+                                    <a href="?page=ListProduto&id=<?= $related['id_produto'] ?>">
+                                        <?= htmlspecialchars($related['nome_produto']) ?>
+                                    </a>
+                                </h4>
+                                <div class="price">
+                                    <span>€<?= $preco_formatado ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
             <div class="col-12 text-center py-4">
                 <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Em breve - produtos relacionados</p>
+                <p class="text-muted">Nenhum produto relacionado encontrado</p>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
+    
 </section>
 
 <!-- Adicione esses scripts no final do body -->
+ 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    
+    
     document.addEventListener('DOMContentLoaded', function() {
         // Troca a imagem principal quando clica nas miniaturas
         document.querySelectorAll('.thumb-container img').forEach(function(thumb) {
@@ -301,4 +389,5 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             }
         });
     });
+    
 </script>
